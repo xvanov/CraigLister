@@ -12,8 +12,8 @@ from gmail import Gmail
 from datetime import date
 from PIL import Image
 
-gmailUser = ""
-gmailPass = ""
+gmailUser = "nucliar7@gmail.com"
+gmailPass = "Tenafter2"
 
 #--------------------------------------- Importing Stuff ----------------------
 
