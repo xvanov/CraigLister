@@ -48,6 +48,10 @@ class listingInfoParse(object):
 
 #------------------------------  Driver Navigation -----------------
 
+def clickLocation(listing):
+    # listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/select[@name='n']//option[@value='11']").click()
+    listing.driver.find_element_by_xpath("//select[@name='n']/option[text()='chicago']").click()
+
 def clickDoneOnImageUploading(listing):
 	listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/form/button").click()
 
@@ -117,6 +121,7 @@ def clickPublishListing(listing):
 	listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/div[1]/form/button[contains(.,'publish')]").click()
 
 def postListing(listing):
+    clickLocation(listing)
     clickListingType(listing)
     clickListingCategory(listing)
     clickAbideByGuidelines(listing)
