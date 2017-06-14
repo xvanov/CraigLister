@@ -51,7 +51,9 @@ class listingInfoParse(object):
 def clickLocation(listing):
     # listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/select[@name='n']//option[@value='11']").click()
     listing.driver.find_element_by_xpath("//select[@name='n']/option[text()='chicago']").click()
+    listing.driver.find_element_by_xpath("//button[@name='go']").click()
 
+    
 def clickDoneOnImageUploading(listing):
 	listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/form/button").click()
 
