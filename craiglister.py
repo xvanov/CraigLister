@@ -38,7 +38,7 @@ class listingInfoParse(object):
         self.city = parsing(f,"<City>")
         self.xstreet = parsing(f,"<CrossStreet>")
         self.state = parsing(f,"<State>")
-        self.neighborhood = parsing(f,"<Neighborhood>")
+        self.geographicarea = parsing(f,"<GeographicArea>")
         self.postal = parsing(f,"<Postal>")
         self.body = parsing(f,"<Body>")
         # just get rid of everything that not unicode
@@ -86,10 +86,12 @@ def fillOutListing(listing):
     listing.driver.find_element_by_id("FromEMail").send_keys(listing.email)
     listing.driver.find_element_by_id("ConfirmEMail").send_keys(listing.email)
     listing.driver.find_element_by_id("PostingTitle").send_keys(listing.title)
-    listing.driver.find_element_by_id("neighborhood").send_keys(listing.neighborhood)
+    listing.driver.find_element_by_id("GeographicArea").send_keys(listing.geographicarea)
     listing.driver.find_element_by_id("postal_code").send_keys(listing.postal)
     listing.driver.find_element_by_id("PostingBody").send_keys(listing.body)
-    listing.driver.find_element_by_id("Ask").send_keys(listing.price)
+    #listing.driver.find_element_by_id("Ask").send_keys(listing.price)
+    ask = listing.driver.find_element_by_name('Ask')
+    ask.send_keys(listing.price)
     listing.driver.find_element_by_xpath("//*[@id='postingForm']/button").click()
 
 def fillOutGeolocation(listing):
