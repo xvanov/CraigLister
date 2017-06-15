@@ -92,7 +92,15 @@ def fillOutListing(listing):
     #listing.driver.find_element_by_id("Ask").send_keys(listing.price)
     ask = listing.driver.find_element_by_name('Ask')
     ask.send_keys(listing.price)
-    listing.driver.find_element_by_xpath("//*[@id='postingForm']/button").click()
+    listing.driver.find_element_by_xpath("//select[@name='moveinMonth']/option[text()='jul']").click()
+    date = listing.driver.find_element_by_name('moveinDay')
+    listing.driver.find_element_by_xpath("//select[@name='private_room']/option[text()='private room']").click()
+    listing.driver.find_element_by_xpath("//select[@name='private_bath']/option[text()='private bath']").click()
+    listing.driver.find_element_by_xpath("//select[@name='laundry']/option[text()='laundry in bldg']").click()
+    listing.driver.find_element_by_xpath("//select[@name='parking']/option[text()='street parking']").click()
+
+    #date.send_keys("1")
+    listing.driver.find_element_by_xpath("//button[@name='go']").click()
 
 def fillOutGeolocation(listing):
     time.sleep(3)
