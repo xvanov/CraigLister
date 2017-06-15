@@ -32,11 +32,13 @@ class listingInfoParse(object):
         self.title = parsing(f,"<Title>")
         self.type = parsing(f,"<Type>")
         self.category = parsing(f,"<Category>")
+        self.area = parsing(f, "<Area>")
         self.email = parsing(f,"<Email>")
         self.street = parsing(f,"<Street>")
         self.city = parsing(f,"<City>")
         self.xstreet = parsing(f,"<CrossStreet>")
         self.state = parsing(f,"<State>")
+        self.neighborhood = parsing(f,"<Neighborhood>")
         self.postal = parsing(f,"<Postal>")
         self.body = parsing(f,"<Body>")
         # just get rid of everything that not unicode
@@ -50,10 +52,13 @@ class listingInfoParse(object):
 
 def clickLocation(listing):
     # listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/select[@name='n']//option[@value='11']").click()
-    listing.driver.find_element_by_xpath("//select[@name='n']/option[text()='chicago']").click()
+    listing.driver.find_element_by_xpath("//select[@name='n']/option[text()='"+ listing.city+"']").click()
     listing.driver.find_element_by_xpath("//button[@name='go']").click()
 
-    
+def clickArea(listing):
+    listing.driver.find_element_by_xpath("//*[contains(text(),'"+ listing.area+"')]").click()
+
+
 def clickDoneOnImageUploading(listing):
 	listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/form/button").click()
 
@@ -68,10 +73,11 @@ def clickClassImageUploader(listing):
 	listing.driver.find_element_by_id("classic").click()
 
 def clickListingType(listing):
-    listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/form/blockquote//label[contains(.,'" + listing.type + "')]/input").click()
+    listing.driver.find_element_by_xpath("//*[contains(text(),'"+ listing.type+"')]").click()
 
 def clickListingCategory(listing):
-    listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/form/blockquote//label[contains(.,'" + listing.category + "')]/input").click()
+    listing.driver.find_element_by_xpath("//*[contains(text(),'"+ listing.category+"')]").click()
+    #listing.driver.find_element_by_xpath("//section/form/blockquote//label[contains(.,'" + listing.category + "')]/input").click()
 
 def uploadImagePath(listing,image):
 	listing.driver.find_element_by_xpath(".//*[@id='uploader']/form/input[3]").send_keys(image)
@@ -80,6 +86,7 @@ def fillOutListing(listing):
     listing.driver.find_element_by_id("FromEMail").send_keys(listing.email)
     listing.driver.find_element_by_id("ConfirmEMail").send_keys(listing.email)
     listing.driver.find_element_by_id("PostingTitle").send_keys(listing.title)
+    listing.driver.find_element_by_id("neighborhood").send_keys(listing.neighborhood)
     listing.driver.find_element_by_id("postal_code").send_keys(listing.postal)
     listing.driver.find_element_by_id("PostingBody").send_keys(listing.body)
     listing.driver.find_element_by_id("Ask").send_keys(listing.price)
@@ -126,6 +133,7 @@ def postListing(listing):
     clickLocation(listing)
     clickListingType(listing)
     clickListingCategory(listing)
+    clickArea(listing)
     clickAbideByGuidelines(listing)
     fillOutListing(listing)
     fillOutGeolocation(listing)
