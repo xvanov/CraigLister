@@ -11,7 +11,6 @@ from os.path import abspath
 from gmail import Gmail
 from datetime import date
 from PIL import Image
-import sys
 
 
 gmailUser = "nucliar7@gmail.com"
@@ -52,15 +51,13 @@ class listingInfoParse(object):
 
 #------------------------------  Driver Navigation -----------------
 
+#[[[[[[[[[[[[CLICKS]]]]]]]]]]]]]]]
 def clickLocation(listing):
-    # listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/select[@name='n']//option[@value='11']").click()
     listing.driver.find_element_by_xpath("//select[@name='n']/option[text()='"+ listing.city+"']").click()
     listing.driver.find_element_by_xpath("//button[@name='go']").click()
 
 def clickArea(listing):
     listing.driver.find_element_by_xpath("//*[contains(text(),'"+ listing.area+"')]").click()
-    listing.driver.find_element_by_xpath("//button[@name='go']").click()
-
 
 def clickDoneOnImageUploading(listing):
     listing.driver.find_element_by_xpath('//button[text()="done with images"]').click()
@@ -82,6 +79,13 @@ def clickListingCategory(listing):
     listing.driver.find_element_by_xpath("//*[contains(text(),'"+ listing.category+"')]").click()
     #listing.driver.find_element_by_xpath("//section/form/blockquote//label[contains(.,'" + listing.category + "')]/input").click()
 
+def clickAcceptTerms(listing):
+    listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/section[1]//button[contains(.,'ACCEPT the terms of use')]").click()
+
+def clickPublishListing(listing):
+    listing.driver.find_element_by_xpath('//button[text()="publish"]').click()
+
+#[[[[[[[[[[[[TASKS]]]]]]]]]]]]]]]
 def uploadImagePath(listing,image):
 	listing.driver.find_element_by_xpath(".//*[@id='uploader']/form/input[3]").send_keys(image)
 
@@ -92,11 +96,10 @@ def fillOutListing(listing):
     listing.driver.find_element_by_id("GeographicArea").send_keys(listing.geographicarea)
     listing.driver.find_element_by_id("postal_code").send_keys(listing.postal)
     listing.driver.find_element_by_id("PostingBody").send_keys(listing.body)
-    #listing.driver.find_element_by_id("Ask").send_keys(listing.price)
-    ask = listing.driver.find_element_by_name('Ask')
-    ask.send_keys(listing.price)
+    listing.driver.find_element_by_name('Ask').send_keys(listing.price)
+    #ask.send_keys(listing.price)
     listing.driver.find_element_by_xpath("//select[@name='moveinMonth']/option[text()='jul']").click()
-    date = listing.driver.find_element_by_name('moveinDay')
+    #date = listing.driver.find_element_by_name('moveinDay')
     listing.driver.find_element_by_xpath("//select[@name='private_room']/option[text()='private room']").click()
     listing.driver.find_element_by_xpath("//select[@name='private_bath']/option[text()='private bath']").click()
     listing.driver.find_element_by_xpath("//select[@name='laundry']/option[text()='laundry in bldg']").click()
@@ -114,7 +117,6 @@ def fillOutGeolocation(listing):
     time.sleep(1)
     listing.driver.find_element_by_id("search_button").click()
     time.sleep(2)
-    #listing.driver.find_element_by_id("postal_code").send_keys(postal) #Should already be there
     listing.driver.find_element_by_xpath("//*[@id='leafletForm']/button[1]").click()
 
 def removeImgExifData(path):
@@ -134,15 +136,7 @@ def uploadListingImages(listing):
         removeImgExifData(image)
         uploadImagePath(listing,image)
         time.sleep(5)
-    print "Hi!"
-    sys.stdout.flush()
     clickDoneOnImageUploading(listing)
-
-def clickAcceptTerms(listing):
-    listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/section[1]//button[contains(.,'ACCEPT the terms of use')]").click()
-
-def clickPublishListing(listing):
-	listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/div[1]/form/button[contains(.,'publish')]").click()
 
 def postListing(listing):
     clickLocation(listing)
