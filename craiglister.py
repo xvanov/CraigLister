@@ -11,11 +11,11 @@ from os.path import abspath
 from gmail import Gmail
 from datetime import date
 from PIL import Image
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 
-
-gmailUser = "nucliar7@gmail.com"
-gmailPass = "Tenafter2"
-
+gmailUser = os.environ.get("EMAIL")
+gmailPass = os.environ.get("PASSWORD")
 #--------------------------------------- Importing Stuff ----------------------
 
 file_path = abspath(getsourcefile(lambda _: None))
