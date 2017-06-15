@@ -11,6 +11,8 @@ from os.path import abspath
 from gmail import Gmail
 from datetime import date
 from PIL import Image
+import sys
+
 
 gmailUser = "nucliar7@gmail.com"
 gmailPass = "Tenafter2"
@@ -57,10 +59,11 @@ def clickLocation(listing):
 
 def clickArea(listing):
     listing.driver.find_element_by_xpath("//*[contains(text(),'"+ listing.area+"')]").click()
+    listing.driver.find_element_by_xpath("//button[@name='go']").click()
 
 
 def clickDoneOnImageUploading(listing):
-	listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/form/button").click()
+    listing.driver.find_element_by_xpath('//button[text()="done with images"]').click()
 
 # Don't always have to do this
 def clickAbideByGuidelines(listing):
@@ -131,6 +134,8 @@ def uploadListingImages(listing):
         removeImgExifData(image)
         uploadImagePath(listing,image)
         time.sleep(5)
+    print "Hi!"
+    sys.stdout.flush()
     clickDoneOnImageUploading(listing)
 
 def clickAcceptTerms(listing):
