@@ -14,8 +14,8 @@ from PIL import Image
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
-gmailUser = os.environ.get("EMAIL")
-gmailPass = os.environ.get("PASSWORD")
+gmailUser = os.environ.get("GMAIL")
+gmailPass = os.environ.get("GMAIL_PASS")
 #--------------------------------------- Importing Stuff ----------------------
 
 file_path = abspath(getsourcefile(lambda _: None))
@@ -80,7 +80,7 @@ def clickListingCategory(listing):
     #listing.driver.find_element_by_xpath("//section/form/blockquote//label[contains(.,'" + listing.category + "')]/input").click()
 
 def clickAcceptTerms(listing):
-    listing.driver.find_element_by_xpath("//*[@id='pagecontainer']/section/section[1]//button[contains(.,'ACCEPT the terms of use')]").click()
+    listing.driver.find_element_by_xpath('//button[text()="ACCEPT the terms of use"]').click()
 
 def clickPublishListing(listing):
     listing.driver.find_element_by_xpath('//button[text()="publish"]').click()
