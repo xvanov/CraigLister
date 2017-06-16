@@ -96,6 +96,7 @@ def fillOutListing(listing):
     listing.driver.find_element_by_id("GeographicArea").send_keys(listing.geographicarea)
     listing.driver.find_element_by_id("postal_code").send_keys(listing.postal)
     listing.driver.find_element_by_id("PostingBody").send_keys(listing.body)
+    listing.driver.find_element_by_id("A").click()
     listing.driver.find_element_by_name('Ask').send_keys(listing.price)
     #ask.send_keys(listing.price)
     listing.driver.find_element_by_xpath("//select[@name='moveinMonth']/option[text()='jul']").click()
