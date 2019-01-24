@@ -1,7 +1,12 @@
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 import time
 import datetime
 import os
@@ -12,10 +17,16 @@ from gmail import Gmail
 from datetime import date
 from PIL import Image
 from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
+from os.path import join, dirname
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 gmailUser = os.environ.get("GMAIL")
 gmailPass = os.environ.get("GMAIL_PASS")
+
+print(gmailUser)
+print(gmailPass)
 #--------------------------------------- Importing Stuff ----------------------
 
 file_path = abspath(getsourcefile(lambda _: None))
@@ -47,20 +58,36 @@ class listingInfoParse(object):
         # tabs will actually go to the next field in craiglist
         self.body = " ".join(self.body.split("\t"))
         self.price = parsing(f,"<Price>")
+        self.private_room = parsing(f,"<Private_room>")
+        self.private_bath = parsing(f,"<Private_bath>")
+        self.housing_type = parsing(f,"<Housing_type>")
+        self.laundry = parsing(f,"<Laundry>")
+        self.parking = parsing(f,"<Parking>")
 
+
+
+#------------------------------  Helper Functions -----------------
+
+# Prerequesit: element that is dentified, text that you want to input
+def clickDropdown(identifier, information):
+    select = identifier
+    select.click()
+    select.send_keys(information)
+    select.send_keys(Keys.ENTER)
 
 #------------------------------  Driver Navigation -----------------
 
 #[[[[[[[[[[[[CLICKS]]]]]]]]]]]]]]]
 def clickLocation(listing):
-    listing.driver.find_element_by_xpath("//select[@name='n']/option[text()='"+ listing.city+"']").click()
+    #opens the dropdown, types in listin.city, then hits enter
+    clickDropdown(listing.driver.find_element_by_id("ui-id-1-button"), listing.city)
     listing.driver.find_element_by_xpath("//button[@name='go']").click()
 
 def clickArea(listing):
     listing.driver.find_element_by_xpath("//*[contains(text(),'"+ listing.area+"')]").click()
 
 def clickDoneOnImageUploading(listing):
-    listing.driver.find_element_by_xpath('//button[text()="done with images"]').click()
+    listing.driver.find_element_by_xpath('//button[text()="done with images" ]').click()
 
 # Don't always have to do this
 def clickAbideByGuidelines(listing):
@@ -90,31 +117,32 @@ def uploadImagePath(listing,image):
 	listing.driver.find_element_by_xpath(".//*[@id='uploader']/form/input[3]").send_keys(image)
 
 def fillOutListing(listing):
-    listing.driver.find_element_by_id("FromEMail").send_keys(listing.email)
-    listing.driver.find_element_by_id("ConfirmEMail").send_keys(listing.email)
-    listing.driver.find_element_by_id("PostingTitle").send_keys(listing.title)
-    listing.driver.find_element_by_id("GeographicArea").send_keys(listing.geographicarea)
-    listing.driver.find_element_by_id("postal_code").send_keys(listing.postal)
-    listing.driver.find_element_by_id("PostingBody").send_keys(listing.body)
-    listing.driver.find_element_by_id("A").click()
-    listing.driver.find_element_by_name('Ask').send_keys(listing.price)
-    #ask.send_keys(listing.price)
-    listing.driver.find_element_by_xpath("//select[@name='moveinMonth']/option[text()='jul']").click()
-    #date = listing.driver.find_element_by_name('moveinDay')
-    listing.driver.find_element_by_xpath("//select[@name='private_room']/option[text()='private room']").click()
-    listing.driver.find_element_by_xpath("//select[@name='private_bath']/option[text()='private bath']").click()
-    listing.driver.find_element_by_xpath("//select[@name='laundry']/option[text()='laundry in bldg']").click()
-    listing.driver.find_element_by_xpath("//select[@name='parking']/option[text()='street parking']").click()
+    listing.driver.find_element_by_name("PostingTitle").send_keys(listing.title)
+    listing.driver.find_element_by_name("FromEMail").send_keys(listing.email)
+    listing.driver.find_element_by_name("ConfirmEMail").send_keys(listing.email)
+    listing.driver.find_element_by_name("GeographicArea").send_keys(listing.geographicarea)
+    listing.driver.find_element_by_name("postal").send_keys(listing.postal)
+    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body)
+    listing.driver.find_element_by_name("Privacy").click()
+    listing.driver.find_element_by_name('price').send_keys(listing.price)
 
-    #date.send_keys("1")
+    #listing.driver.find_element_by_xpath("//select[@name='moveinMonth']/option[text()='jul']").click()
+    clickDropdown(listing.driver.find_element_by_id("ui-id-1-button"),listing.private_room)
+    clickDropdown(listing.driver.find_element_by_id("ui-id-2-button"),listing.private_bath)
+    clickDropdown(listing.driver.find_element_by_id("ui-id-3-button"),listing.housing_type)
+    clickDropdown(listing.driver.find_element_by_id("ui-id-4-button"),listing.laundry)
+    clickDropdown(listing.driver.find_element_by_id("ui-id-5-button"),listing.parking)
+
+    listing.driver.find_element_by_name("no_smoking").click()
+    listing.driver.find_element_by_name("is_furnished").click()
     listing.driver.find_element_by_xpath("//button[@name='go']").click()
 
 def fillOutGeolocation(listing):
     time.sleep(3)
-    listing.driver.find_element_by_id("xstreet0").send_keys(listing.street)
-    listing.driver.find_element_by_id("xstreet1").send_keys(listing.xstreet)
-    listing.driver.find_element_by_id("city").send_keys(listing.city)
-    listing.driver.find_element_by_id("region").send_keys(listing.state)
+    listing.driver.find_element_by_name("xstreet0").send_keys(listing.street)
+    listing.driver.find_element_by_name("xstreet1").send_keys(listing.xstreet)
+    #listing.driver.find_element_by_name("city").send_keys(listing.city)
+    #listing.driver.find_element_by_name("region").send_keys(listing.state)
     time.sleep(1)
     listing.driver.find_element_by_id("search_button").click()
     time.sleep(2)
@@ -141,9 +169,9 @@ def uploadListingImages(listing):
 
 def postListing(listing):
     clickLocation(listing)
+    clickArea(listing)
     clickListingType(listing)
     clickListingCategory(listing)
-    clickArea(listing)
     clickAbideByGuidelines(listing)
     fillOutListing(listing)
     fillOutGeolocation(listing)
@@ -177,13 +205,13 @@ def acceptEmailTerms(listing):
     day = today.day
 
     time.sleep(120)
-    print "Checking email"
+    print ("Checking email")
     emails = gmail.inbox().mail(sender="robot@craigslist.org",unread=True,after=datetime.date(year, month, day-1))
     termsUrl = getFirstCraigslistEmailUrl(listing,emails)
     acceptTermsAndConditions(listing,termsUrl)
 
     gmail.logout()
-    print "Done Checking Email"
+    print ("Done Checking Email")
 
 
 # --------------------------- Craigslist Posting Actions ---------------
@@ -196,7 +224,7 @@ def moveFolder(folder,listedFolderDirectory):
     today_dir = os.path.join(listedFolderDirectory,time.strftime("%x").replace("/","-"))
 
     # Make todays date under the listed directory
-    makeFolder(today_dir)
+    os.makedirs(today_dir)
 
     # Move the folder to the listed todays date directory
     shutil.move(folder, today_dir)
@@ -221,9 +249,9 @@ def hasItBeenXDaysSinceFolderListed(folder,x):
     return False
 
 def getOrderedListingImages(listingFolder):
-    print 'listingFolder',listingFolder
+    print ('listingFolder',listingFolder)
     listingImages = [f for f in os.listdir(listingFolder) if os.path.isfile(os.path.join(listingFolder,f)) and f[0] != '.'  and f != 'info.txt' ]
-    print 'listingImages',listingImages
+    print ('listingImages',listingImages)
     secondList = [os.path.abspath(os.path.join(listingFolder, x)) for x in listingImages if (x[1] != "_") or (x[0].isdigit() == False) and x[0] != '.']
     firstList = [os.path.abspath(os.path.join(listingFolder, x)) for x in listingImages if (x[1] == "_") and (x[0].isdigit()) and x[0] != '.']
 
@@ -268,5 +296,5 @@ for listingFolder in listingFolders:
     moveFolder(listingFolder,listedFolderDirectory)
     listing.driver.close()
     time.sleep(120)
-    print "Waiting 2 minutes"
-print "No More Craiglist Items To List"
+    print ("Waiting 2 minutes")
+print ("No More Craiglist Items To List")

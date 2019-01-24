@@ -1,38 +1,155 @@
-CraigLister
-===========
+#Yazan's notes
 
-This program will repeatedly post your craigslist ads every 72 hours and auto approve them.
+Install requirements
+Make sure you have a .env file created with gmail information
 
-It is useful when you want something to sell put you don't want to repeatedly post them.
 
-It is built using selenium, it automates the browser actions and uses a gmail library to approve listings.
 
-Dependencies
-------------
 
-This program uses the gmail library found here:
+# GMail for Python
 
-https://github.com/charlierguo/gmail/tree/master/gmail
+A Pythonic interface to Google's GMail, with all the tools you'll need. Search,
+read and send multipart emails, archive, mark as read/unread, delete emails,
+and manage labels.
 
-Also you need chromedriver as found here:
+__This library is still under development, so please forgive some of the rough edges__
 
-http://chromedriver.storage.googleapis.com/index.html
+Heavily inspired by [Kriss "nu7hatch" Kowalik's GMail for Ruby library](https://github.com/nu7hatch/gmail)
 
-Pillow
+## Author
 
-Python imaging library. To install use "pip install Pillow".
-If you have an error you may need to "pip uninstall PIL" and reinstall Pillow as well.
+* [Charlie Guo](https://github.com/charlierguo)
 
-Usage
------
+## Installation
 
-| Steps | Action |
---------|--------|
-| 1 | Download the chromedriver and put into this directory |
-| 2 | Install and import the gmail library or download files from gmail link and put in this directory |
-| 3 | Change the gmail username/pass in the craiglister.py file
-| 4 | In the listings folder create a new folder that describes the item to post and include pictures and an info.txt file (There is already a "Laptop" folder as an example)|
-| 5 | Delete the Laptop Example in the listings folder and delete the 04-16-15 folder in the listed folder |
-| 6 | Run craigslister.py and it will post every listing in the listings folder |
+For now, installation is manual (`pip` support not yet implemented) and the only requirement is to use Python 2 (2.7+ to be precise):
 
-This script works by parsing the info.txt file, filling out the craigslist post with that information, uploading the pictures and then submitting the post. Craigslist will then email you an approval link, the gmail library will parse that link and selenium will direct you to that link and click accept. Then the folder you created for that post will get moved to a posted folder within a date folder. Then when it has been 72 hours or greater the posts within that date folder will be moved back to the posts pool and will get posted again.
+    git clone git://github.com/charlierguo/gmail.git
+
+## Features
+
+* Search emails
+* Read emails
+* Emails: label, archive, delete, mark as read/unread/spam, star
+* Manage labels
+
+## Basic usage
+
+To start, import the `gmail` library.
+
+    import gmail
+
+### Authenticating gmail sessions
+
+To easily get up and running:
+
+    import gmail
+
+    g = gmail.login(username, password)
+
+Which will automatically log you into a GMail account.
+This is actually a shortcut for creating a new Gmail object:
+
+    from gmail import Gmail
+
+    g = Gmail()
+    g.login(username, password)
+    # play with your gmail...
+    g.logout()
+
+You can also check if you are logged in at any time:
+
+    g = gmail.login(username, password)
+    g.logged_in # Should be True, AuthenticationError if login fails
+
+### OAuth authentication
+
+If you have already received an [OAuth2 access token from Google](https://developers.google.com/accounts/docs/OAuth2) for a given user, you can easily log the user in. (Because OAuth 1.0 usage was deprecated in April 2012, this library does not currently support its usage)
+
+    gmail = gmail.authenticate(username, access_token)
+
+### Filtering emails
+
+Get all messages in your inbox:
+
+    g.inbox().mail()
+
+Get messages that fit some criteria:
+
+    g.inbox().mail(after=datetime.date(2013, 6, 18), before=datetime.date(2013, 8, 3))
+    g.inbox().mail(on=datetime.date(2009, 1, 1)
+    g.inbox().mail(sender="myfriend@gmail.com") # "from" is reserved, use "fr" or "sender"
+    g.inbox().mail(to="directlytome@gmail.com")
+
+Combine flags and options:
+
+    g.inbox().mail(unread=True, sender="myboss@gmail.com")
+
+Browsing labeled emails is similar to working with your inbox.
+
+    g.mailbox('Urgent').mail()
+
+Every message in a conversation/thread will come as a separate message.
+
+    g.inbox().mail(unread=True, before=datetime.date(2013, 8, 3) sender="myboss@gmail.com")
+
+### Working with emails
+
+__Important: calls to `mail()` will return a list of empty email messages (with unique IDs). To work with labels, headers, subjects, and bodies, call `fetch()` on an individual message. You can call mail with `prefetch=True`, which will fetch the bodies automatically.__
+
+    unread = g.inbox().mail(unread=True)
+    print unread[0].body
+    # None
+
+    unread[0].fetch()
+    print unread[0].body
+    # Dear ...,
+
+Mark news past a certain date as read and archive it:
+
+    emails = g.inbox().mail(before=datetime.date(2013, 4, 18), sender="news@nbcnews.com")
+    for email in emails:
+        email.read() # can also unread(), delete(), spam(), or star()
+        email.archive()
+
+Delete all emails from a certain person:
+
+    emails = g.inbox().mail(sender="junkmail@gmail.com")
+    for email in emails:
+        email.delete()
+
+You can use also `label` method instead of `mailbox`:
+
+    g.label("Faxes").mail()
+
+Add a label to a message:
+
+    email.add_label("Faxes")
+
+Download message attachments:
+
+    for attachment in email.attachments:
+        print 'Saving attachment: ' + attachment.name
+        print 'Size: ' + str(attachment.size) + ' KB'
+        attachment.save('attachments/' + attachment.name)
+
+There is also few shortcuts to mark messages quickly:
+
+    email.read()
+    email.unread()
+    email.spam()
+    email.star()
+    email.unstar()
+
+### Roadmap
+* Write tests
+* Better label support
+* Moving between labels/mailboxes
+* Intuitive thread fetching & manipulation
+* Sending mail via Google's SMTP servers (for now, check out https://github.com/paulchakravarti/gmail-sender)
+
+## Copyright
+
+* Copyright (c) 2013 Charlie Guo
+
+See LICENSE for details.
