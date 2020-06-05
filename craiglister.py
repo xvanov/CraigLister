@@ -12,6 +12,8 @@ import datetime
 import os
 import shutil
 from inspect import getsourcefile
+from os import environ
+from os import listdir
 from os.path import abspath
 from gmail import Gmail
 from datetime import date
@@ -19,7 +21,7 @@ from PIL import Image
 from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
 
-dotenv_path = join(dirname(__file__), '.env')
+dotenv_path = 'login1.env'
 load_dotenv(dotenv_path)
 
 gmailUser = os.environ.get("GMAIL")
@@ -27,6 +29,9 @@ gmailPass = os.environ.get("GMAIL_PASS")
 
 print(gmailUser)
 print(gmailPass)
+
+
+
 #--------------------------------------- Importing Stuff ----------------------
 
 file_path = abspath(getsourcefile(lambda _: None))
@@ -169,13 +174,21 @@ def uploadListingImages(listing):
 
 def postListing(listing):
     clickLocation(listing)
+    time.sleep(2)
     clickArea(listing)
+    time.sleep(2)
     clickListingType(listing)
+    time.sleep(2)
     clickListingCategory(listing)
+    time.sleep(2)
     clickAbideByGuidelines(listing)
+    time.sleep(2)
     fillOutListing(listing)
+    time.sleep(2)
     fillOutGeolocation(listing)
+    time.sleep(2)
     uploadListingImages(listing)
+    time.sleep(2)
     clickPublishListing(listing)
 
 # --------------------------- Emails ---------------------
@@ -198,12 +211,12 @@ def acceptTermsAndConditions(listing,termsUrl):
 def acceptEmailTerms(listing):
     gmail = Gmail()
     gmail.login(gmailUser,gmailPass)
-
     today = date.today()
     year = today.year
     month = today.month
     day = today.day
-
+    
+    print("Receiving email confirmation...")
     time.sleep(120)
     print ("Checking email")
     emails = gmail.inbox().mail(sender="robot@craigslist.org",unread=True,after=datetime.date(year, month, day-1))
@@ -211,23 +224,31 @@ def acceptEmailTerms(listing):
     acceptTermsAndConditions(listing,termsUrl)
 
     gmail.logout()
-    print ("Done Checking Email")
+    print ("Confirmed")
 
 
 # --------------------------- Craigslist Posting Actions ---------------
 
-def moveFolder(folder,listedFolderDirectory):
 
-    now = time.strftime("%c")
+def moveFolder(folder,listedFolderDirectory):
+    
+    doesItExist = os.listdir("D:\\SubletInn\\CraigLister\\listings\\listed\\")
+    todaysDate = time.strftime("%x").replace("/","-")
+    print(doesItExist)
+    print(todaysDate)
 
     # %x >>>get the date like this 7/16/2014
     today_dir = os.path.join(listedFolderDirectory,time.strftime("%x").replace("/","-"))
 
     # Make todays date under the listed directory
-    os.makedirs(today_dir)
+    if todaysDate in doesItExist:
+        shutil.move(folder, today_dir)
+        print('only moved')
+    else:
+        os.makedirs(today_dir)
+        shutil.move(folder, today_dir)
+        print("made and moved")
 
-    # Move the folder to the listed todays date directory
-    shutil.move(folder, today_dir)
 
 def parsing(f,splits):
     fsplit = f.split(splits)
