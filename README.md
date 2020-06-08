@@ -7,13 +7,12 @@ Requirements:
 
 * Create 2 env files named 'login1.env' and 'login2.env'
 
-    *'login1.env'
+    'login1.env'
 
         *GMAIL1 = "francishouse.a@gmail.com"
-
         *GMAIL_PASS1 = "Licardo7"
 
-    *'login2.env'
+    'login2.env'
 
         *GMAIL2 = "francishouse.b@gmail.com"
         *GMAIL_PASS2 = "Licardo7"
@@ -22,13 +21,13 @@ Requirements:
 
 * Install dependencies (Note: if pip2 isn't recognized then you will need to add Python 27\Scripts to your PATH)
 
-    *pip2 install -U "pylint<2.0.0"
+    pip2 install -U "pylint<2.0.0"
 
-    *pip2 install -U Selenium
+    pip2 install -U Selenium
 
-    *pip2 install -U Pillow
+    pip2 install -U Pillow
 
-    *pip2 install -U python-dotenv
+    pip2 install -U python-dotenv
 
 
 
