@@ -1,7 +1,9 @@
+
+
 #Joe's notes
 
 
-Install requirements:
+Setup requirements:
 
 * Create 2 env files named 'login1.env' and 'login2.env'
     --'login1.env'
@@ -11,22 +13,18 @@ Install requirements:
     GMAIL2 = "francishouse.b@gmail.com"
     GMAIL_PASS2 = "Licardo7"
 
-* Make sure you are using Python 2.7+ as your interpreter
+* Make sure you are using Python 2.7 as your interpreter
 
-* Install dependencies
-
-
-
-
-
-
+* Install dependencies (Note: if pip2 isn't recognized then you will need to add Python 27\Scripts to your PATH)
+    --pip2 install -U "pylint<2.0.0"
+    --pip2 install -U Selenium
+    --pip2 install -U Pillow
+    --pip2 install -U python-dotenv
 
 
 
 
-
-
-
+---------------------------------------------------------------------------------------------------------------
 
 
 
