@@ -3,7 +3,7 @@
 # Setup Instructions
 
 
-Requirements:
+
 
 * Create 2 env files named 'login1.env' and 'login2.env'
 
