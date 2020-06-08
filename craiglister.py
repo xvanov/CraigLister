@@ -174,21 +174,21 @@ def uploadListingImages(listing):
 
 def postListing(listing):
     clickLocation(listing)
-    time.sleep(1)
+    time.sleep(3)
     clickArea(listing)
-    time.sleep(1)
+    time.sleep(3)
     clickListingType(listing)
-    time.sleep(1)
+    time.sleep(3)
     clickListingCategory(listing)
-    time.sleep(1)
+    time.sleep(3)
     clickAbideByGuidelines(listing)
-    time.sleep(1)
+    time.sleep(3)
     fillOutListing(listing)
-    time.sleep(1)
+    time.sleep(3)
     fillOutGeolocation(listing)
-    time.sleep(1)
+    time.sleep(3)
     uploadListingImages(listing)
-    time.sleep(1)
+    time.sleep(3)
     clickPublishListing(listing)
 
 # --------------------------- Emails ---------------------
@@ -311,12 +311,12 @@ for listingFolder in listingFolders:
     if cycleNum <= 2:
         gmailUser = os.environ.get("GMAIL1")
         gmailPass = os.environ.get("GMAIL_PASS1")
-        print("Used first email; ", cycleNum)
+        print("Used first email: ", cycleNum)
 
     else:
         gmailUser = os.environ.get("GMAIL2")
         gmailPass = os.environ.get("GMAIL_PASS2")
-        print("Used second email; ", cycleNum)
+        print("Used second email: ", cycleNum)
 
 
     listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
@@ -325,6 +325,7 @@ for listingFolder in listingFolders:
     listing.images = getOrderedListingImages(listingFolder)
     listing.driver = webdriver.Chrome(chromedriver)
     listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
+    time.sleep(1)
     postListing(listing)
     acceptEmailTerms(listing)
     moveFolder(listingFolder,listedFolderDirectory)
