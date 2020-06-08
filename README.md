@@ -5,7 +5,7 @@
 
 
 
-* Create 2 env files named 'login1.env' and 'login2.env'
+* Create two env files
 
     login1.env
 
