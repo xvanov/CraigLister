@@ -6,10 +6,10 @@
 Setup requirements:
 
 * Create 2 env files named 'login1.env' and 'login2.env'
-    --'login1.env'
+    *'login1.env'
     GMAIL1 = "francishouse.a@gmail.com"
     GMAIL_PASS1 = "Licardo7"
-    --'login2.env'
+    *'login2.env'
     GMAIL2 = "francishouse.b@gmail.com"
     GMAIL_PASS2 = "Licardo7"
 
