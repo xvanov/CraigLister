@@ -21,15 +21,15 @@ from PIL import Image
 from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
 
-dotenv_path = 'login1.env'
-load_dotenv(dotenv_path)
 
-gmailUser = os.environ.get("GMAIL")
-gmailPass = os.environ.get("GMAIL_PASS")
+#------------------Pull in email credentials---------------
+dotenv_path1 = 'login1.env'
+dotenv_path2 = 'login2.env'
+load_dotenv(dotenv_path1)
+load_dotenv(dotenv_path2)
 
-print(gmailUser)
-print(gmailPass)
-
+#----------------------Declare counter------------------------------
+cycleNum = 1
 
 
 #--------------------------------------- Importing Stuff ----------------------
@@ -174,21 +174,21 @@ def uploadListingImages(listing):
 
 def postListing(listing):
     clickLocation(listing)
-    time.sleep(2)
+    time.sleep(1)
     clickArea(listing)
-    time.sleep(2)
+    time.sleep(1)
     clickListingType(listing)
-    time.sleep(2)
+    time.sleep(1)
     clickListingCategory(listing)
-    time.sleep(2)
+    time.sleep(1)
     clickAbideByGuidelines(listing)
-    time.sleep(2)
+    time.sleep(1)
     fillOutListing(listing)
-    time.sleep(2)
+    time.sleep(1)
     fillOutGeolocation(listing)
-    time.sleep(2)
+    time.sleep(1)
     uploadListingImages(listing)
-    time.sleep(2)
+    time.sleep(1)
     clickPublishListing(listing)
 
 # --------------------------- Emails ---------------------
@@ -306,6 +306,19 @@ for dayListedFolder in listedItemsFolders:
 listingFolders = [listing for listing in os.listdir(listingsFolderDirectory) if listing[0] != "." and listing != "listed"]
 
 for listingFolder in listingFolders:
+
+    #This is the conditional argument for logins
+    if cycleNum <= 2:
+        gmailUser = os.environ.get("GMAIL1")
+        gmailPass = os.environ.get("GMAIL_PASS1")
+        print("Used first email; ", cycleNum)
+
+    else:
+        gmailUser = os.environ.get("GMAIL2")
+        gmailPass = os.environ.get("GMAIL_PASS2")
+        print("Used second email; ", cycleNum)
+
+
     listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
     with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
         listing = listingInfoParse(info.read())
@@ -316,6 +329,13 @@ for listingFolder in listingFolders:
     acceptEmailTerms(listing)
     moveFolder(listingFolder,listedFolderDirectory)
     listing.driver.close()
-    time.sleep(120)
+    print("Listings posted: ", cycleNum)
+    cycleNum = cycleNum + 1
     print ("Waiting 2 minutes")
+    time.sleep(120)
+
 print ("No More Craiglist Items To List")
+
+
+
+
