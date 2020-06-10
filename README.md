@@ -17,7 +17,7 @@
         GMAIL2 = "francishouse.b@gmail.com"
         GMAIL_PASS2 = "Licardo7"
 
-* Make sure you are using Python 2.7 as your interpreter
+* Make sure you are using Python 2.7+ as your interpreter
 
 * Install dependencies (Note: if pip2 isn't recognized then you will need to add Python 27\Scripts to your PATH)
 
