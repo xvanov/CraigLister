@@ -9,13 +9,13 @@
 
     login1.env
 
-        GMAIL1 = "francishouse.a@gmail.com"
-        GMAIL_PASS1 = "Licardo7"
+        GMAIL1 = ""
+        GMAIL_PASS1 = ""
 
     login2.env
 
-        GMAIL2 = "francishouse.b@gmail.com"
-        GMAIL_PASS2 = "Licardo7"
+        GMAIL2 = ""
+        GMAIL_PASS2 = ""
 
 * Make sure you are using Python 2.7+ as your interpreter
 
