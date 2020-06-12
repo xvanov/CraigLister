@@ -12,6 +12,8 @@ import datetime
 import os
 import shutil
 from inspect import getsourcefile
+from os import environ
+from os import listdir
 from os.path import abspath
 from gmail import Gmail
 from datetime import date
@@ -19,21 +21,24 @@ from PIL import Image
 from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
 
-gmailUser = os.environ.get("GMAIL")
-gmailPass = os.environ.get("GMAIL_PASS")
+#------------------Pull in email credentials---------------
+dotenv_path1 = 'login1.env'
+dotenv_path2 = 'login2.env'
+load_dotenv(dotenv_path1)
+load_dotenv(dotenv_path2)
 
-print(gmailUser)
-print(gmailPass)
+#----------------------Declare counter------------------------------
+cycleNum = 1
+
+
 #--------------------------------------- Importing Stuff ----------------------
 
 file_path = abspath(getsourcefile(lambda _: None))
 file_dir = os.path.normpath(file_path + os.sep + os.pardir)
 listingsFolderDirectory = os.path.abspath(os.path.join(file_dir, "listings"))
 listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
-chromedriver = file_dir + "/chromedriver"
+chromedriver = file_dir + "/chromedriver-win"
 os.environ["webdriver.chrome.driver"] = chromedriver
 
 #------------------------------- Set Up Necessary Directories ---------
@@ -119,8 +124,8 @@ def uploadImagePath(listing,image):
 def fillOutListing(listing):
     listing.driver.find_element_by_name("PostingTitle").send_keys(listing.title)
     listing.driver.find_element_by_name("FromEMail").send_keys(listing.email)
-    listing.driver.find_element_by_name("ConfirmEMail").send_keys(listing.email)
-    listing.driver.find_element_by_name("GeographicArea").send_keys(listing.geographicarea)
+    #listing.driver.find_element_by_name("ConfirmEMail").send_keys(listing.email)
+    listing.driver.find_element_by_name("geographic_area").send_keys(listing.geographicarea)
     listing.driver.find_element_by_name("postal").send_keys(listing.postal)
     listing.driver.find_element_by_name("PostingBody").send_keys(listing.body)
     listing.driver.find_element_by_name("Privacy").click()
@@ -169,13 +174,21 @@ def uploadListingImages(listing):
 
 def postListing(listing):
     clickLocation(listing)
+    time.sleep(3)
     clickArea(listing)
+    time.sleep(3)
     clickListingType(listing)
+    time.sleep(3)
     clickListingCategory(listing)
+    time.sleep(3)
     clickAbideByGuidelines(listing)
+    time.sleep(3)
     fillOutListing(listing)
+    time.sleep(3)
     fillOutGeolocation(listing)
+    time.sleep(3)
     uploadListingImages(listing)
+    time.sleep(3)
     clickPublishListing(listing)
 
 # --------------------------- Emails ---------------------
@@ -198,12 +211,12 @@ def acceptTermsAndConditions(listing,termsUrl):
 def acceptEmailTerms(listing):
     gmail = Gmail()
     gmail.login(gmailUser,gmailPass)
-
     today = date.today()
     year = today.year
     month = today.month
     day = today.day
-
+    
+    print("Receiving email confirmation...")
     time.sleep(120)
     print ("Checking email")
     emails = gmail.inbox().mail(sender="robot@craigslist.org",unread=True,after=datetime.date(year, month, day-1))
@@ -211,23 +224,31 @@ def acceptEmailTerms(listing):
     acceptTermsAndConditions(listing,termsUrl)
 
     gmail.logout()
-    print ("Done Checking Email")
+    print ("Confirmed")
 
 
 # --------------------------- Craigslist Posting Actions ---------------
 
-def moveFolder(folder,listedFolderDirectory):
 
-    now = time.strftime("%c")
+def moveFolder(folder,listedFolderDirectory):
+    
+    doesItExist = os.listdir("D:\\SubletInn\\CraigLister\\listings\\listed\\")
+    todaysDate = time.strftime("%x").replace("/","-")
+    print(doesItExist)
+    print(todaysDate)
 
     # %x >>>get the date like this 7/16/2014
     today_dir = os.path.join(listedFolderDirectory,time.strftime("%x").replace("/","-"))
 
     # Make todays date under the listed directory
-    os.makedirs(today_dir)
+    if todaysDate in doesItExist:
+        shutil.move(folder, today_dir)
+        print('only moved')
+    else:
+        os.makedirs(today_dir)
+        shutil.move(folder, today_dir)
+        print("made and moved")
 
-    # Move the folder to the listed todays date directory
-    shutil.move(folder, today_dir)
 
 def parsing(f,splits):
     fsplit = f.split(splits)
@@ -285,16 +306,37 @@ for dayListedFolder in listedItemsFolders:
 listingFolders = [listing for listing in os.listdir(listingsFolderDirectory) if listing[0] != "." and listing != "listed"]
 
 for listingFolder in listingFolders:
+
+    #This is the conditional argument for logins
+    if cycleNum <= 2:
+        gmailUser = os.environ.get("GMAIL1")
+        gmailPass = os.environ.get("GMAIL_PASS1")
+        print("Used first email: ", cycleNum)
+
+    else:
+        gmailUser = os.environ.get("GMAIL2")
+        gmailPass = os.environ.get("GMAIL_PASS2")
+        print("Used second email: ", cycleNum)
+
+
     listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
     with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
         listing = listingInfoParse(info.read())
     listing.images = getOrderedListingImages(listingFolder)
     listing.driver = webdriver.Chrome(chromedriver)
     listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
+    time.sleep(1)
     postListing(listing)
     acceptEmailTerms(listing)
     moveFolder(listingFolder,listedFolderDirectory)
     listing.driver.close()
-    time.sleep(120)
+    print("Listings posted: ", cycleNum)
+    cycleNum = cycleNum + 1
     print ("Waiting 2 minutes")
+    time.sleep(120)
+
 print ("No More Craiglist Items To List")
+
+
+
+

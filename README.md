@@ -1,8 +1,48 @@
-#Yazan's notes
 
-Install requirements
-Make sure you have a .env file created with gmail information
 
+# Setup Instructions
+
+
+
+
+* Create two env files
+
+    login1.env
+
+        GMAIL1 = ""
+        GMAIL_PASS1 = ""
+
+    login2.env
+
+        GMAIL2 = ""
+        GMAIL_PASS2 = ""
+
+* Make sure you are using Python 2.7+ as your interpreter
+
+
+* Specify the proper version of chromedriver for your machine on line 41 of craiglister.py
+
+    "chromedriver-win" for Windows machines
+
+    "chromedriver-mac" for Mac computers
+
+    "chromedriver-linux" for Linux machines
+
+
+* Install dependencies (Note: if pip2 isn't recognized then you will need to add Python 27\Scripts to your PATH)
+
+    pip2 install -U "pylint<2.0.0"
+
+    pip2 install -U Selenium
+
+    pip2 install -U Pillow
+
+    pip2 install -U python-dotenv
+
+
+
+
+---------------------------------------------------------------------------------------------------------------
 
 
 
