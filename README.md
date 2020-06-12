@@ -19,6 +19,16 @@
 
 * Make sure you are using Python 2.7+ as your interpreter
 
+
+* Specify the proper version of chromedriver for your machine on line 41 of craiglister.py
+
+    "chromedriver-win" for Windows machines
+
+    "chromedriver-mac" for Mac computers
+
+    "chromedriver-linux" for Linux machines
+
+
 * Install dependencies (Note: if pip2 isn't recognized then you will need to add Python 27\Scripts to your PATH)
 
     pip2 install -U "pylint<2.0.0"

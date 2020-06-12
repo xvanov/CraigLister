@@ -38,7 +38,7 @@ file_path = abspath(getsourcefile(lambda _: None))
 file_dir = os.path.normpath(file_path + os.sep + os.pardir)
 listingsFolderDirectory = os.path.abspath(os.path.join(file_dir, "listings"))
 listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
-chromedriver = file_dir + "/chromedriver"
+chromedriver = file_dir + "/chromedriver-win"
 os.environ["webdriver.chrome.driver"] = chromedriver
 
 #------------------------------- Set Up Necessary Directories ---------
