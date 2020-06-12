@@ -12,7 +12,7 @@ python-dotenv==0.13.0
 requests==2.23.0
 selenium==3.141.0
 slack-cleaner==0.7.3
-slacker==0.9.50
+slacker==0.14.0
 urllib3==1.25.9
 Werkzeug==1.0.1
 Gmail
