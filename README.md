@@ -20,7 +20,10 @@
 * Make sure you are using Python 2.7+ as your interpreter
 
 
-* Specify the proper version of chromedriver for your machine on line 41 of craiglister.py
+* [Mac/Linux] Comment out line 40 in craiglister.py
+
+
+* Specify the proper version of chromedriver for your machine on line 50 of craiglister.py
 
     "chromedriver-win" for Windows machines
 
