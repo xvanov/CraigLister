@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
@@ -33,13 +34,27 @@ cycleNum = 1
 
 
 #--------------------------------------- Importing Stuff ----------------------
+options = webdriver.ChromeOptions()
+options.add_argument("--headless") # Runs Chrome in headless mode.
+options.add_argument('--no-sandbox') # Bypass OS security model
+options.add_argument('--disable-gpu')  # applicable to windows os only
+options.add_argument('start-maximized') # 
+options.add_argument('disable-infobars')
+options.add_argument("--disable-extensions")
 
 file_path = abspath(getsourcefile(lambda _: None))
 file_dir = os.path.normpath(file_path + os.sep + os.pardir)
 listingsFolderDirectory = os.path.abspath(os.path.join(file_dir, "listings"))
 listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
-chromedriver = file_dir + "/chromedriver-win"
-os.environ["webdriver.chrome.driver"] = chromedriver
+
+driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+
+
+## chromedriver = file_dir + "/chromedriver-win"
+## os.environ["webdriver.chrome.driver"] = chromedriver
+
+
+
 
 #------------------------------- Set Up Necessary Directories ---------
 
@@ -323,7 +338,7 @@ for listingFolder in listingFolders:
     with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
         listing = listingInfoParse(info.read())
     listing.images = getOrderedListingImages(listingFolder)
-    listing.driver = webdriver.Chrome(chromedriver)
+    listing.driver = driver
     listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
     time.sleep(1)
     postListing(listing)
