@@ -37,7 +37,7 @@ cycleNum = 1
 options = webdriver.ChromeOptions()
 options.add_argument("--headless") # Runs Chrome in headless mode.
 options.add_argument('--no-sandbox') # Bypass OS security model
-options.add_argument('--disable-gpu')  # applicable to windows os only
+##options.add_argument('--disable-gpu')  # applicable to windows os only
 options.add_argument('start-maximized') # 
 options.add_argument('disable-infobars')
 options.add_argument("--disable-extensions")
@@ -47,7 +47,7 @@ file_dir = os.path.normpath(file_path + os.sep + os.pardir)
 listingsFolderDirectory = os.path.abspath(os.path.join(file_dir, "listings"))
 listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
-driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
 
 
 ## chromedriver = file_dir + "/chromedriver-win"
@@ -189,12 +189,16 @@ def uploadListingImages(listing):
 
 def postListing(listing):
     clickLocation(listing)
+    print("clicked location")
     time.sleep(3)
     clickArea(listing)
+    print("clicked area")
     time.sleep(3)
     clickListingType(listing)
+    print("clicked listing type")
     time.sleep(3)
     clickListingCategory(listing)
+    print("")
     time.sleep(3)
     clickAbideByGuidelines(listing)
     time.sleep(3)
@@ -338,11 +342,16 @@ for listingFolder in listingFolders:
     with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
         listing = listingInfoParse(info.read())
     listing.images = getOrderedListingImages(listingFolder)
+    print("Images are ready to be uploaded")
     listing.driver = driver
+    print("driver is ready")
     listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
+    print("site reached")
     time.sleep(1)
     postListing(listing)
+    print("Listing filled out")
     acceptEmailTerms(listing)
+    print("Listing confirmed")
     moveFolder(listingFolder,listedFolderDirectory)
     listing.driver.close()
     print("Listings posted: ", cycleNum)
