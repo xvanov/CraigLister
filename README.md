@@ -5,25 +5,23 @@
 
 
 
-* Create two env files
+* Create an env file
 
-    login1.env
+    login.env
 
         GMAIL1 = ""
         GMAIL_PASS1 = ""
-
-    login2.env
-
         GMAIL2 = ""
         GMAIL_PASS2 = ""
+
 
 * Make sure you are using Python 2.7+ as your interpreter
 
 
-* [Mac/Linux] Comment out line 40 in craiglister.py
+* [Mac/Linux] Comment out line 36 in craiglister.py
 
 
-* Specify the proper version of chromedriver for your machine on line 50 of craiglister.py
+* Specify the proper version of chromedriver for your machine on line 52, 53, and 356 of craiglister.py
 
     "chromedriver-win" for Windows machines
 
