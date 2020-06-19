@@ -24,7 +24,7 @@ from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
 
 
-#----------------------Declare counter------------------------------
+# Declare counter
 cycleNum = 1
 
 #--------------------------------------- Importing Stuff ----------------------
@@ -258,7 +258,7 @@ def acceptEmailTerms(listing):
 
 def moveFolder(folder,listedFolderDirectory):
     
-    doesItExist = os.listdir('/home/ubuntu/CraigLister-Server/listings/listed')
+    doesItExist = os.listdir(file_dir + 'CraigLister-Server/listings/listed')
     todaysDate = time.strftime("%x").replace("/","-")
     print(doesItExist)
     print(todaysDate)
@@ -333,24 +333,25 @@ listingFolders = [listing for listing in os.listdir(listingsFolderDirectory) if 
 
 for listingFolder in listingFolders:
 
+    listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
+    with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
+        listing = listingInfoParse(info.read())
+    print(info)
+
     #This is the conditional argument for logins
-    if cycleNum <= 2:
+    if "Armitage" or "Francis" in info:
         gmailUser = os.getenv("GMAIL2")
         gmailPass = os.getenv("GMAIL_PASS2")
-        print("Used email b: ", cycleNum)
+        print("Used email b")
         print(gmailUser)
         print(gmailPass)
     else:
         gmailUser = os.getenv("GMAIL1")
         gmailPass = os.getenv("GMAIL_PASS1")
-        print("Used email c: ", cycleNum)
+        print("Used email c")
         print(gmailUser)
         print(gmailPass)
 
-
-    listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
-    with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
-        listing = listingInfoParse(info.read())
     listing.images = getOrderedListingImages(listingFolder)
     print(userAgent)
     driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')

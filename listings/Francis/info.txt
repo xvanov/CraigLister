@@ -3,7 +3,7 @@
 <Type>housing offered<Type>
 <Category>sublets & temporary<Category>
 <Area>city of chicago<Area>
-<Email>francishouse.c@gmail.com<Email>
+<Email>francishouse.b@gmail.com<Email>
 <Street>2748 w. Francis Place<Street>
 <City>chicago<City>
 <CrossStreet><CrossStreet>
