@@ -30,7 +30,7 @@
     "chromedriver-linux" for Linux machines
 
 
-* Install dependencies (Note: if pip2 isn't recognized then you will need to add Python 27\Scripts to your PATH)
+* Install dependencies (Windows Note: if pip2 isn't recognized then you will need to add Python 27\Scripts to your PATH)
 
     pip2 install -U "pylint<2.0.0"
 
