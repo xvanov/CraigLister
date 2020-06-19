@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
@@ -7,6 +8,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
+from fake_useragent import UserAgent
 import time
 import datetime
 import os
@@ -22,24 +24,37 @@ from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
 
 
-#------------------Pull in email credentials---------------
-dotenv_path1 = 'login1.env'
-dotenv_path2 = 'login2.env'
-load_dotenv(dotenv_path1)
-load_dotenv(dotenv_path2)
-
 #----------------------Declare counter------------------------------
 cycleNum = 1
 
-
 #--------------------------------------- Importing Stuff ----------------------
+options = webdriver.ChromeOptions()
+ua = UserAgent()
+userAgent = ua.random
+options.add_argument("--headless") # Runs Chrome in headless mode.
+options.add_argument('--no-sandbox') # Bypass OS security model
+options.add_argument('--disable-gpu')  # applicable to windows os only
+options.add_argument('start-maximized') # 
+options.add_argument('disable-infobars')
+options.add_argument("--disable-extensions")
+options.add_argument('user-agent={userAgent}')
 
 file_path = abspath(getsourcefile(lambda _: None))
 file_dir = os.path.normpath(file_path + os.sep + os.pardir)
 listingsFolderDirectory = os.path.abspath(os.path.join(file_dir, "listings"))
 listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
+
+#------------------Pull in email credentials---------------
+dotenv_path = join(dirname(__file__), 'login.env')
+load_dotenv(dotenv_path)
+
+
+driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
 chromedriver = file_dir + "/chromedriver-win"
 os.environ["webdriver.chrome.driver"] = chromedriver
+
+
+
 
 #------------------------------- Set Up Necessary Directories ---------
 
@@ -112,7 +127,7 @@ def clickListingCategory(listing):
     #listing.driver.find_element_by_xpath("//section/form/blockquote//label[contains(.,'" + listing.category + "')]/input").click()
 
 def clickAcceptTerms(listing):
-    listing.driver.find_element_by_xpath('//button[text()="ACCEPT the terms of use"]').click()
+    listing.driver.find_element_by_xpath('//button[@value="y"]').click()
 
 def clickPublishListing(listing):
     listing.driver.find_element_by_xpath('//button[text()="publish"]').click()
@@ -174,22 +189,31 @@ def uploadListingImages(listing):
 
 def postListing(listing):
     clickLocation(listing)
+    print("clicked location")
     time.sleep(3)
     clickArea(listing)
+    print("clicked area")
     time.sleep(3)
     clickListingType(listing)
+    print("clicked listing type")
     time.sleep(3)
     clickListingCategory(listing)
+    print("Clicked Category")
     time.sleep(3)
     clickAbideByGuidelines(listing)
+    print("Clicked Guidelines")
     time.sleep(3)
     fillOutListing(listing)
+    print("Filled out listing")
     time.sleep(3)
     fillOutGeolocation(listing)
+    print("Clicked Geolocation")
     time.sleep(3)
     uploadListingImages(listing)
+    print("Uploaded images")
     time.sleep(3)
     clickPublishListing(listing)
+    print("Clicked publish listing")
 
 # --------------------------- Emails ---------------------
 
@@ -210,6 +234,8 @@ def acceptTermsAndConditions(listing,termsUrl):
 
 def acceptEmailTerms(listing):
     gmail = Gmail()
+    print(gmailUser)
+    print(gmailPass)
     gmail.login(gmailUser,gmailPass)
     today = date.today()
     year = today.year
@@ -232,7 +258,7 @@ def acceptEmailTerms(listing):
 
 def moveFolder(folder,listedFolderDirectory):
     
-    doesItExist = os.listdir("D:\\SubletInn\\CraigLister\\listings\\listed\\")
+    doesItExist = os.listdir('/home/ubuntu/CraigLister-Server/listings/listed')
     todaysDate = time.strftime("%x").replace("/","-")
     print(doesItExist)
     print(todaysDate)
@@ -309,27 +335,39 @@ for listingFolder in listingFolders:
 
     #This is the conditional argument for logins
     if cycleNum <= 2:
-        gmailUser = os.environ.get("GMAIL1")
-        gmailPass = os.environ.get("GMAIL_PASS1")
-        print("Used first email: ", cycleNum)
-
+        gmailUser = os.getenv("GMAIL2")
+        gmailPass = os.getenv("GMAIL_PASS2")
+        print("Used email b: ", cycleNum)
+        print(gmailUser)
+        print(gmailPass)
     else:
-        gmailUser = os.environ.get("GMAIL2")
-        gmailPass = os.environ.get("GMAIL_PASS2")
-        print("Used second email: ", cycleNum)
+        gmailUser = os.getenv("GMAIL1")
+        gmailPass = os.getenv("GMAIL_PASS1")
+        print("Used email c: ", cycleNum)
+        print(gmailUser)
+        print(gmailPass)
 
 
     listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
     with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
         listing = listingInfoParse(info.read())
     listing.images = getOrderedListingImages(listingFolder)
-    listing.driver = webdriver.Chrome(chromedriver)
+    print(userAgent)
+    driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+    listing.driver = driver
+    print("Images are ready to be uploaded")
+    listing.driver.start_client()
+    print("driver is ready")
+    time.sleep(2)
     listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
-    time.sleep(1)
+    print("site reached")
+    time.sleep(2)
     postListing(listing)
     acceptEmailTerms(listing)
+    print("Listing confirmed")
     moveFolder(listingFolder,listedFolderDirectory)
-    listing.driver.close()
+    listing.driver.quit()
+    listing.driver.stop_client()
     print("Listings posted: ", cycleNum)
     cycleNum = cycleNum + 1
     print ("Waiting 2 minutes")
