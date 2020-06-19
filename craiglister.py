@@ -33,7 +33,7 @@ ua = UserAgent()
 userAgent = ua.random
 options.add_argument("--headless") # Runs Chrome in headless mode.
 options.add_argument('--no-sandbox') # Bypass OS security model
-##options.add_argument('--disable-gpu')  # applicable to windows os only
+options.add_argument('--disable-gpu')  # applicable to windows os only
 options.add_argument('start-maximized') # 
 options.add_argument('disable-infobars')
 options.add_argument("--disable-extensions")
@@ -49,8 +49,8 @@ dotenv_path = join(dirname(__file__), 'login.env')
 load_dotenv(dotenv_path)
 
 
-driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
-chromedriver = file_dir + "/chromedriver-linux"
+driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+chromedriver = file_dir + "/chromedriver-win"
 os.environ["webdriver.chrome.driver"] = chromedriver
 
 
@@ -353,7 +353,7 @@ for listingFolder in listingFolders:
         listing = listingInfoParse(info.read())
     listing.images = getOrderedListingImages(listingFolder)
     print(userAgent)
-    driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
+    driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
     listing.driver = driver
     print("Images are ready to be uploaded")
     listing.driver.start_client()
