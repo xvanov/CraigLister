@@ -16,3 +16,4 @@ slacker==0.14.0
 urllib3==1.25.9
 Werkzeug==1.0.1
 Gmail
+fake-useragent==0.1.11
