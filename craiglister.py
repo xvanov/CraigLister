@@ -37,7 +37,7 @@ options.add_argument('--no-sandbox') # Bypass OS security model
 options.add_argument('start-maximized') # 
 options.add_argument('disable-infobars')
 options.add_argument("--disable-extensions")
-##options.add_argument('user-agent={userAgent}')
+options.add_argument('user-agent={userAgent}')
 
 file_path = abspath(getsourcefile(lambda _: None))
 file_dir = os.path.normpath(file_path + os.sep + os.pardir)
@@ -127,7 +127,7 @@ def clickListingCategory(listing):
     #listing.driver.find_element_by_xpath("//section/form/blockquote//label[contains(.,'" + listing.category + "')]/input").click()
 
 def clickAcceptTerms(listing):
-    listing.driver.find_element_by_xpath('//button[text()="ACCEPT the terms of use"]').click()
+    listing.driver.find_element_by_xpath('//button[@value="y"]').click()
 
 def clickPublishListing(listing):
     listing.driver.find_element_by_xpath('//button[text()="publish"]').click()
@@ -343,7 +343,7 @@ for listingFolder in listingFolders:
     else:
         gmailUser = os.getenv("GMAIL1")
         gmailPass = os.getenv("GMAIL_PASS1")
-        print("Used email a: ", cycleNum)
+        print("Used email c: ", cycleNum)
         print(gmailUser)
         print(gmailPass)
 
@@ -352,24 +352,25 @@ for listingFolder in listingFolders:
     with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
         listing = listingInfoParse(info.read())
     listing.images = getOrderedListingImages(listingFolder)
-    ##print(userAgent)
-    print("Images are ready to be uploaded")
+    print(userAgent)
+    driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
     listing.driver = driver
-    driver.start_client()
+    print("Images are ready to be uploaded")
+    listing.driver.start_client()
     print("driver is ready")
     time.sleep(2)
-    driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
+    listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
     print("site reached")
     time.sleep(2)
     postListing(listing)
     acceptEmailTerms(listing)
     print("Listing confirmed")
     moveFolder(listingFolder,listedFolderDirectory)
-    driver.quit()
-    driver.stop_client()
+    listing.driver.quit()
+    listing.driver.stop_client()
     print("Listings posted: ", cycleNum)
     cycleNum = cycleNum + 1
-    print ("Waiting 60 seconds")
+    print ("Waiting 2 minutes")
     time.sleep(120)
 
 print ("No More Craiglist Items To List")
