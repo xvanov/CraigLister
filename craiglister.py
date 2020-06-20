@@ -390,16 +390,12 @@ for listingFolder in listingFolders:
         time.sleep(120)
 
     except:
-        err = OSError
         receiver_email = os.getenv("ToEmail")
-        message = "Subject: Craigslist Error Occurred!\n\nHere is what it says:" + repr(err)
+        message = "Subject: Craigslist Error Occurred!\n\nThings did not go as planned..."
         smtp_server = "smtp.gmail.com"
         port = 587  # For starttls
         sender_email = gmailUser
         password = gmailPass
-
-        # Create a secure SSL context
-        # context = ssl.create_default_context()
 
         # Try to log in to server and send email
         server = smtplib.SMTP(smtp_server,port)
