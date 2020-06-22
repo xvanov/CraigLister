@@ -49,7 +49,6 @@ file_path = abspath(getsourcefile(lambda _: None))
 file_dir = os.path.normpath(file_path + os.sep + os.pardir)
 listingsFolderDirectory = os.path.abspath(os.path.join(file_dir, "listings"))
 listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
-runLogDirectory = os.path.abspath(os.path.join(file_dir, "logs"))
 
 
 #------------------Pull in email credentials---------------
