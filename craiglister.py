@@ -24,6 +24,7 @@ from datetime import date
 from PIL import Image
 from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
+import traceback
 
 
 
@@ -59,6 +60,7 @@ load_dotenv(dotenv_path)
 driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
 chromedriver = file_dir + "/chromedriver-win"
 os.environ["webdriver.chrome.driver"] = chromedriver
+
 
 
 
@@ -390,8 +392,9 @@ for listingFolder in listingFolders:
         time.sleep(120)
 
     except:
+        var = traceback.format_exc()
         receiver_email = os.getenv("ToEmail")
-        message = "Subject: Craigslist Error Occurred!\n\nThings did not go as planned..."
+        message = "Subject: Craigslist Error Occurred!\n\nHere's the log:\n\n " + var
         smtp_server = "smtp.gmail.com"
         port = 587  # For starttls
         sender_email = gmailUser
