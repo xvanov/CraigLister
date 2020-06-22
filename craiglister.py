@@ -267,7 +267,7 @@ def acceptEmailTerms(listing):
 
 def moveToListedFolder(folder,listedFolderDirectory):
     
-    doesItExist = os.listdir(file_dir + 'CraigLister-Server/listings/listed')
+    doesItExist = os.listdir(file_dir + '/listings/listed')
     todaysDate = time.strftime("%x").replace("/","-")
     print(doesItExist)
     print(todaysDate)
@@ -349,10 +349,10 @@ for listingFolder in listingFolders:
 
     
         #This is the conditional argument for logins
-        if "Armitage" or "Francis" in info:
+        if "Polk" in str(info):
             gmailUser = os.getenv("GMAIL2")
             gmailPass = os.getenv("GMAIL_PASS2")
-            print("Used email b")
+            print("Used email d")
             print(gmailUser)
             print(gmailPass)
         else:
@@ -363,9 +363,6 @@ for listingFolder in listingFolders:
             print(gmailPass)
 
         
-
-
-
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
         driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
@@ -381,15 +378,15 @@ for listingFolder in listingFolders:
         acceptEmailTerms(listing)
         print("Listing confirmed")
         moveToListedFolder(listingFolder,listedFolderDirectory)
-
-        
-
         listing.driver.quit()
         listing.driver.stop_client()
         print("Listings posted: ", cycleNum)
         cycleNum = cycleNum + 1
         print ("Waiting 2 minutes")
         time.sleep(120)
+
+
+
 
     except:
         var = traceback.format_exc()
