@@ -13,6 +13,8 @@ import time
 import datetime
 import os
 import shutil
+import sys
+import smtplib, ssl
 from inspect import getsourcefile
 from os import environ
 from os import listdir
@@ -22,9 +24,13 @@ from datetime import date
 from PIL import Image
 from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
+import traceback
 
 
-#----------------------Declare counter------------------------------
+
+
+
+# Declare counter
 cycleNum = 1
 
 #--------------------------------------- Importing Stuff ----------------------
@@ -43,6 +49,8 @@ file_path = abspath(getsourcefile(lambda _: None))
 file_dir = os.path.normpath(file_path + os.sep + os.pardir)
 listingsFolderDirectory = os.path.abspath(os.path.join(file_dir, "listings"))
 listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
+runLogDirectory = os.path.abspath(os.path.join(file_dir, "logs"))
+
 
 #------------------Pull in email credentials---------------
 dotenv_path = join(dirname(__file__), 'login.env')
@@ -52,6 +60,7 @@ load_dotenv(dotenv_path)
 driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
 chromedriver = file_dir + "/chromedriver-win"
 os.environ["webdriver.chrome.driver"] = chromedriver
+
 
 
 
@@ -256,9 +265,9 @@ def acceptEmailTerms(listing):
 # --------------------------- Craigslist Posting Actions ---------------
 
 
-def moveFolder(folder,listedFolderDirectory):
+def moveToListedFolder(folder,listedFolderDirectory):
     
-    doesItExist = os.listdir('/home/ubuntu/CraigLister-Server/listings/listed')
+    doesItExist = os.listdir(file_dir + '/listings/listed')
     todaysDate = time.strftime("%x").replace("/","-")
     print(doesItExist)
     print(todaysDate)
@@ -274,7 +283,6 @@ def moveFolder(folder,listedFolderDirectory):
         os.makedirs(today_dir)
         shutil.move(folder, today_dir)
         print("made and moved")
-
 
 def parsing(f,splits):
     fsplit = f.split(splits)
@@ -328,51 +336,76 @@ for dayListedFolder in listedItemsFolders:
     shutil.rmtree(dayListedFolderDirectory)
 
 
-# List Items
+# ------------------------------LIST ITEMS----------------------------------
 listingFolders = [listing for listing in os.listdir(listingsFolderDirectory) if listing[0] != "." and listing != "listed"]
 
 for listingFolder in listingFolders:
 
-    #This is the conditional argument for logins
-    if cycleNum <= 2:
-        gmailUser = os.getenv("GMAIL2")
-        gmailPass = os.getenv("GMAIL_PASS2")
-        print("Used email b: ", cycleNum)
-        print(gmailUser)
-        print(gmailPass)
-    else:
-        gmailUser = os.getenv("GMAIL1")
-        gmailPass = os.getenv("GMAIL_PASS1")
-        print("Used email c: ", cycleNum)
-        print(gmailUser)
-        print(gmailPass)
+    try:
+        listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
+        with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
+            listing = listingInfoParse(info.read())
+        print(info)
+
+    
+        #This is the conditional argument for logins
+        if "Polk" in str(info):
+            gmailUser = os.getenv("GMAIL2")
+            gmailPass = os.getenv("GMAIL_PASS2")
+            print("Used email d")
+            print(gmailUser)
+            print(gmailPass)
+        else:
+            gmailUser = os.getenv("GMAIL1")
+            gmailPass = os.getenv("GMAIL_PASS1")
+            print("Used email c")
+            print(gmailUser)
+            print(gmailPass)
+
+        
+        listing.images = getOrderedListingImages(listingFolder)
+        print(userAgent)
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+        listing.driver = driver
+        print("Images are ready to be uploaded")
+        listing.driver.start_client()
+        print("driver is ready")
+        time.sleep(2)
+        listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
+        print("site reached")
+        time.sleep(2)
+        postListing(listing)
+        acceptEmailTerms(listing)
+        print("Listing confirmed")
+        moveToListedFolder(listingFolder,listedFolderDirectory)
+        listing.driver.quit()
+        listing.driver.stop_client()
+        print("Listings posted: ", cycleNum)
+        cycleNum = cycleNum + 1
+        print ("Waiting 2 minutes")
+        time.sleep(120)
 
 
-    listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
-    with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
-        listing = listingInfoParse(info.read())
-    listing.images = getOrderedListingImages(listingFolder)
-    print(userAgent)
-    driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
-    listing.driver = driver
-    print("Images are ready to be uploaded")
-    listing.driver.start_client()
-    print("driver is ready")
-    time.sleep(2)
-    listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
-    print("site reached")
-    time.sleep(2)
-    postListing(listing)
-    acceptEmailTerms(listing)
-    print("Listing confirmed")
-    moveFolder(listingFolder,listedFolderDirectory)
-    listing.driver.quit()
-    listing.driver.stop_client()
-    print("Listings posted: ", cycleNum)
-    cycleNum = cycleNum + 1
-    print ("Waiting 2 minutes")
-    time.sleep(120)
 
+
+    except:
+        var = traceback.format_exc()
+        receiver_email = os.getenv("ToEmail")
+        message = "Subject: Craigslist Error Occurred!\n\nHere's the log:\n\n " + var
+        smtp_server = "smtp.gmail.com"
+        port = 587  # For starttls
+        sender_email = gmailUser
+        password = gmailPass
+
+        # Try to log in to server and send email
+        server = smtplib.SMTP(smtp_server,port)
+        server.starttls() # Secure the connection
+        server.login(sender_email, password)
+        server.sendmail(from_addr=sender_email, to_addrs=receiver_email, msg=message) # send email
+        server.quit() 
+        sys.exit()
+
+ 
 print ("No More Craiglist Items To List")
 
 
