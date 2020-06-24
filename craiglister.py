@@ -56,10 +56,6 @@ dotenv_path = join(dirname(__file__), 'login.env')
 load_dotenv(dotenv_path)
 
 
-driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
-chromedriver = file_dir + "/chromedriver-win"
-os.environ["webdriver.chrome.driver"] = chromedriver
-
 
 
 
@@ -150,7 +146,7 @@ def fillOutListing(listing):
     #listing.driver.find_element_by_name("ConfirmEMail").send_keys(listing.email)
     listing.driver.find_element_by_name("geographic_area").send_keys(listing.geographicarea)
     listing.driver.find_element_by_name("postal").send_keys(listing.postal)
-    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body)
+    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body, cycleNum)
     listing.driver.find_element_by_name("Privacy").click()
     listing.driver.find_element_by_name('price').send_keys(listing.price)
 
@@ -393,8 +389,8 @@ for listingFolder in listingFolders:
         message = "Subject: Craigslist Error Occurred!\n\nHere's the log:\n\n " + var
         smtp_server = "smtp.gmail.com"
         port = 587  # For starttls
-        sender_email = gmailUser
-        password = gmailPass
+        sender_email = os.getenv("GMAIL1")
+        password = os.getenv("GMAIL_PASS1")
 
         # Try to log in to server and send email
         server = smtplib.SMTP(smtp_server,port)
