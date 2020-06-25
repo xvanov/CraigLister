@@ -363,7 +363,7 @@ for listingFolder in listingFolders:
 
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
         listing.driver = driver
         print("Images are ready to be uploaded")
         listing.driver.start_client()
