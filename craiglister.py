@@ -29,9 +29,11 @@ import traceback
 
 
 
-
 # Declare counter
 cycleNum = 1
+
+
+
 
 #--------------------------------------- Importing Stuff ----------------------
 options = webdriver.ChromeOptions()
@@ -51,11 +53,11 @@ listingsFolderDirectory = os.path.abspath(os.path.join(file_dir, "listings"))
 listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
 
+
+
 #------------------Pull in email credentials---------------
-dotenv_path = join(dirname(__file__), 'login.env')
+dotenv_path = join(dirname(__file__), 'settings.env')
 load_dotenv(dotenv_path)
-
-
 
 
 
@@ -90,6 +92,7 @@ class listingInfoParse(object):
 
 
 
+
 #------------------------------  Helper Functions -----------------
 
 # Prerequesit: element that is dentified, text that you want to input
@@ -98,6 +101,9 @@ def clickDropdown(identifier, information):
     select.click()
     select.send_keys(information)
     select.send_keys(Keys.ENTER)
+
+
+
 
 #------------------------------  Driver Navigation -----------------
 
@@ -219,6 +225,9 @@ def postListing(listing):
     clickPublishListing(listing)
     print("Clicked publish listing")
 
+
+
+
 # --------------------------- Emails ---------------------
 
 def getFirstCraigslistEmailUrl(listing,emails):
@@ -255,6 +264,8 @@ def acceptEmailTerms(listing):
 
     gmail.logout()
     print ("Confirmed")
+
+
 
 
 # --------------------------- Craigslist Posting Actions ---------------
@@ -331,6 +342,8 @@ for dayListedFolder in listedItemsFolders:
     shutil.rmtree(dayListedFolderDirectory)
 
 
+
+
 # ------------------------------LIST ITEMS----------------------------------
 listingFolders = [listing for listing in os.listdir(listingsFolderDirectory) if listing[0] != "." and listing != "listed"]
 
@@ -340,27 +353,17 @@ for listingFolder in listingFolders:
         listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
         with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
             listing = listingInfoParse(info.read())
-        print(info)
 
     
-        #This is the conditional argument for logins
-        if "Polk" in str(info):
-            gmailUser = os.getenv("GMAIL2")
-            gmailPass = os.getenv("GMAIL_PASS2")
-            print("Used email d")
-            print(gmailUser)
-            print(gmailPass)
-        else:
-            gmailUser = os.getenv("GMAIL1")
-            gmailPass = os.getenv("GMAIL_PASS1")
-            print("Used email c")
-            print(gmailUser)
-            print(gmailPass)
-
+        #Pull in the email credentials
+        gmailUser = listing.email
+        gmailPass = os.getenv("GMAILPASS")
+        print(gmailUser)
+        print(gmailPass)
 
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
         listing.driver = driver
         print("Images are ready to be uploaded")
         listing.driver.start_client()
@@ -391,8 +394,8 @@ for listingFolder in listingFolders:
         message = "Subject: Craigslist Error Occurred!\n\nHere's the log:\n\n " + errorString
         smtp_server = "smtp.gmail.com"
         port = 587  # For starttls
-        sender_email = os.getenv("GMAIL1")
-        password = os.getenv("GMAIL_PASS1")
+        sender_email = os.getenv("SenderEmail")
+        password = os.getenv("GMAILPASS")
 
         # Try to log in to server and send email
         server = smtplib.SMTP(smtp_server,port)
