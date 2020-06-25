@@ -48,7 +48,7 @@ Make sure there are only 2 same-category listings per email used in the info.txt
 ---------------------------------------------------------------------------------------------------------------
 
 
-# GMail for Python
+# GMail for Python Docs
 
 A Pythonic interface to Google's GMail, with all the tools you'll need. Search,
 read and send multipart emails, archive, mark as read/unread, delete emails,
