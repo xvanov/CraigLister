@@ -357,10 +357,10 @@ for listingFolder in listingFolders:
             print(gmailUser)
             print(gmailPass)
 
-        
+
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
         listing.driver = driver
         print("Images are ready to be uploaded")
         listing.driver.start_client()
@@ -383,10 +383,12 @@ for listingFolder in listingFolders:
 
 
 
-    except:
-        var = traceback.format_exc()
+    except: #Sends an email when an error occurs
+
+        errorString = traceback.format_exc() #Gets the traceback log after an error happens
+
         receiver_email = os.getenv("ToEmail")
-        message = "Subject: Craigslist Error Occurred!\n\nHere's the log:\n\n " + var
+        message = "Subject: Craigslist Error Occurred!\n\nHere's the log:\n\n " + errorString
         smtp_server = "smtp.gmail.com"
         port = 587  # For starttls
         sender_email = os.getenv("GMAIL1")
