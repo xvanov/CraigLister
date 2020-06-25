@@ -40,7 +40,7 @@
 
 ---------------------------------------------------------------------------------------------------------------
 
-#Note for listings:
+Note for listings:
 
 Make sure there are only 2 same-category listings per email used in the info.txt file.
 
