@@ -7,21 +7,18 @@
 
 * Create an env file
 
-    login.env
+    settings.env
 
-        GMAIL1 = ""
-        GMAIL_PASS1 = ""
-        GMAIL2 = ""
-        GMAIL_PASS2 = ""
+        SenderEmail = ""
+        GMAILPASS = ""
+        ToEmail = ""
 
 
 * Make sure you are using Python 2.7+ as your interpreter
 
 
-* [Mac/Linux] Comment out line 42 in craiglister.py
 
-
-* Specify the proper version of chromedriver for your machine on line 59, 60, and 367 of craiglister.py
+* Specify the proper version of chromedriver for your machine on line 366 of craiglister.py
 
     "chromedriver-win" for Windows machines
 
@@ -41,10 +38,14 @@
     pip2 install -U python-dotenv
 
 
+---------------------------------------------------------------------------------------------------------------
+
+#Note for listings:
+
+Make sure there are only 2 same-category listings per email used in the info.txt file.
 
 
 ---------------------------------------------------------------------------------------------------------------
-
 
 
 # GMail for Python
