@@ -25,12 +25,7 @@ from PIL import Image
 from dotenv import load_dotenv, find_dotenv
 from os.path import join, dirname
 import traceback
-
-
-
-
-# Declare counter
-cycleNum = 1
+import random
 
 
 
@@ -149,10 +144,9 @@ def uploadImagePath(listing,image):
 def fillOutListing(listing):
     listing.driver.find_element_by_name("PostingTitle").send_keys(listing.title)
     listing.driver.find_element_by_name("FromEMail").send_keys(listing.email)
-    #listing.driver.find_element_by_name("ConfirmEMail").send_keys(listing.email)
     listing.driver.find_element_by_name("geographic_area").send_keys(listing.geographicarea)
     listing.driver.find_element_by_name("postal").send_keys(listing.postal)
-    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body, cycleNum)
+    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body, random.randint(1,101))
     listing.driver.find_element_by_name("Privacy").click()
     listing.driver.find_element_by_name('price').send_keys(listing.price)
 
@@ -346,10 +340,12 @@ for dayListedFolder in listedItemsFolders:
 
 # ------------------------------LIST ITEMS----------------------------------
 listingFolders = [listing for listing in os.listdir(listingsFolderDirectory) if listing[0] != "." and listing != "listed"]
+cycleNum = 1
 
 for listingFolder in listingFolders:
 
     try:
+
         listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
         with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
             listing = listingInfoParse(info.read())
@@ -361,9 +357,10 @@ for listingFolder in listingFolders:
         print(gmailUser)
         print(gmailPass)
 
+        
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
         listing.driver = driver
         print("Images are ready to be uploaded")
         listing.driver.start_client()
@@ -382,9 +379,7 @@ for listingFolder in listingFolders:
         cycleNum = cycleNum + 1
         print ("Waiting 2 minutes")
         time.sleep(120)
-
-
-
+        
 
     except: #Sends an email when an error occurs
 
@@ -405,9 +400,27 @@ for listingFolder in listingFolders:
         server.quit() 
         sys.exit()
 
- 
-print ("No More Craiglist Items To List")
 
 
 
 
+#  Sends an email upon success!
+#      |  |  |
+#      V  V  V
+today_dir = os.path.join(listedFolderDirectory,time.strftime("%x").replace("/","-"))
+today_date = time.strftime("%x").replace("/","-")
+receiver_email = os.getenv("ToEmail")
+message = "Subject: Successful job " + today_date + "\n\nHere's what posted: \n\n" + str(os.listdir(today_dir)) + "\n\n Tune in next week!"
+
+smtp_server = "smtp.gmail.com"
+port = 587  # For starttls
+sender_email = os.getenv("SenderEmail")
+password = os.getenv("GMAILPASS")
+
+# Try to log in to server and send email
+server = smtplib.SMTP(smtp_server,port)
+server.starttls() # Secure the connection
+server.login(sender_email, password)
+server.sendmail(from_addr=sender_email, to_addrs=receiver_email, msg=message) # send email
+server.quit() 
+sys.exit()
