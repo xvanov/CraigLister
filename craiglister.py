@@ -36,7 +36,6 @@ ua = UserAgent()
 userAgent = ua.random
 options.add_argument("--headless") # Runs Chrome in headless mode.
 options.add_argument('--no-sandbox') # Bypass OS security model
-options.add_argument('--disable-gpu')  # applicable to windows os only
 options.add_argument('start-maximized') # 
 options.add_argument('disable-infobars')
 options.add_argument("--disable-extensions")
@@ -360,7 +359,7 @@ for listingFolder in listingFolders:
         
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-linux')
         listing.driver = driver
         print("Images are ready to be uploaded")
         listing.driver.start_client()
