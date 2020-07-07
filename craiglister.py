@@ -145,7 +145,7 @@ def fillOutListing(listing):
     listing.driver.find_element_by_name("FromEMail").send_keys(listing.email)
     listing.driver.find_element_by_name("geographic_area").send_keys(listing.geographicarea)
     listing.driver.find_element_by_name("postal").send_keys(listing.postal)
-    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body, random.randint(1,101))
+    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body, random.randint(1,1001))
     listing.driver.find_element_by_name("Privacy").click()
     listing.driver.find_element_by_name('price').send_keys(listing.price)
 
