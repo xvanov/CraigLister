@@ -18,12 +18,11 @@ import smtplib, ssl
 from inspect import getsourcefile
 from os import environ
 from os import listdir
-from os.path import abspath
 from gmail import Gmail
 from datetime import date
 from PIL import Image
 from dotenv import load_dotenv, find_dotenv
-from os.path import join, dirname
+from os.path import abspath, join, dirname
 import traceback
 
 
