@@ -36,6 +36,8 @@
     pip2 install -U Pillow
 
     pip2 install -U python-dotenv
+    
+    pip2 install fake-useragent
 
 
 ---------------------------------------------------------------------------------------------------------------
