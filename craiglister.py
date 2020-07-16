@@ -53,7 +53,8 @@ listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
 load_dotenv(dotenv_path)
 
-
+print(os.getenv("SenderEmail"))
+print(os.getenv("GMAILPASS"))
 
 
 #------------------------------- Set Up Necessary Directories ---------
