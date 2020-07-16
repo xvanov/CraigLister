@@ -322,7 +322,9 @@ listedItemsFolders = [folder for folder in os.listdir(listedFolderDirectory) if 
 # Moving items that are 3 days or older back into the queue to get listed again
 for dayListedFolder in listedItemsFolders:
 
-    if (hasItBeenXDaysSinceFolderListed(dayListedFolder,3) == False):
+    #if (hasItBeenXDaysSinceFolderListed(dayListedFolder,3) == False):
+        #continue
+    if 'placeholder' in dayListedFolder:
         continue
 
     listedFolders = [listedFolders for listedFolders in os.listdir(os.path.join(listedFolderDirectory,dayListedFolder)) if listedFolders[0] != "."]
