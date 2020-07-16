@@ -49,7 +49,8 @@ listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
 
 #------------------Pull in email credentials---------------
-dotenv_path = join(dirname(__file__), 'settings.env')
+#dotenv_path = join(dirname(__file__), 'settings.env')
+dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
 load_dotenv(dotenv_path)
 
 
