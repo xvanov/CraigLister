@@ -33,13 +33,13 @@ import random
 options = webdriver.ChromeOptions()
 ua = UserAgent()
 userAgent = ua.random
-#options.add_argument("--headless") # Runs Chrome in headless mode.
-#options.add_argument('--no-sandbox') # Bypass OS security model
-#options.add_argument("--disable-dev-shm-usage")
-#options.add_argument("--disable-gpu")
-#options.add_argument("--disable-features=NetworkService")
-#options.add_argument("--window-size=1920x1080")
-#options.add_argument("--disable-features=VizDisplayCompositor")
+options.add_argument("--headless") # Runs Chrome in headless mode.
+options.add_argument('--no-sandbox') # Bypass OS security model
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--disable-gpu")
+options.add_argument("--disable-features=NetworkService")
+options.add_argument("--window-size=1920x1080")
+options.add_argument("--disable-features=VizDisplayCompositor")
 options.add_argument('start-maximized')
 options.add_argument('disable-infobars')
 options.add_argument("--disable-extensions")
@@ -54,8 +54,8 @@ listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
 
 #------------------Pull in email credentials---------------
-dotenv_path = join(dirname(__file__), 'settings.env')
-#dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
+#dotenv_path = join(dirname(__file__), 'settings.env')
+dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
 load_dotenv(dotenv_path)
 
 print(os.getenv("SenderEmail"))
@@ -373,7 +373,7 @@ for listingFolder in listingFolders:
         
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-linux')
         listing.driver = driver
         print("Images are ready to be uploaded")
         listing.driver.start_client()
