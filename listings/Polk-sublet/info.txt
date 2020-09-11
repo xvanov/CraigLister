@@ -15,7 +15,7 @@
 <Housing_type>house<Housing_type>
 <Laundry>laundry in bldg<Laundry>
 <Parking>street parking<Parking>
-<Price>995<Price>
+<Price>850<Price>
 
 <Body>
 Are you a medical student, intern, or professional living in Chicago for the first time? You could find a sublet in the city all by yourself, but imagine how much better your Chicago experience would be with friends to explore the city with!

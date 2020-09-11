@@ -33,9 +33,14 @@ import random
 options = webdriver.ChromeOptions()
 ua = UserAgent()
 userAgent = ua.random
-options.add_argument("--headless") # Runs Chrome in headless mode.
-options.add_argument('--no-sandbox') # Bypass OS security model
-options.add_argument('start-maximized') # 
+#options.add_argument("--headless") # Runs Chrome in headless mode.
+#options.add_argument('--no-sandbox') # Bypass OS security model
+#options.add_argument("--disable-dev-shm-usage")
+#options.add_argument("--disable-gpu")
+#options.add_argument("--disable-features=NetworkService")
+#options.add_argument("--window-size=1920x1080")
+#options.add_argument("--disable-features=VizDisplayCompositor")
+options.add_argument('start-maximized')
 options.add_argument('disable-infobars')
 options.add_argument("--disable-extensions")
 options.add_argument('user-agent={userAgent}')
@@ -132,7 +137,7 @@ def clickListingCategory(listing):
     #listing.driver.find_element_by_xpath("//section/form/blockquote//label[contains(.,'" + listing.category + "')]/input").click()
 
 def clickAcceptTerms(listing):
-    listing.driver.find_element_by_xpath('//button[@value="y"]').click()
+    driver.find_element_by_partial_link_text("chicago.craigslist.org").click()
 
 def clickPublishListing(listing):
     listing.driver.find_element_by_xpath('//button[text()="publish"]').click()
@@ -147,7 +152,7 @@ def fillOutListing(listing):
     listing.driver.find_element_by_name("geographic_area").send_keys(listing.geographicarea)
     listing.driver.find_element_by_name("postal").send_keys(listing.postal)
     listing.driver.find_element_by_name("PostingBody").send_keys(listing.body, random.randint(1,1001))
-    listing.driver.find_element_by_name("Privacy").click()
+    listing.driver.find_element_by_xpath('/html/body/article/section/form/div/div/fieldset[2]/div/div/div[2]/label/label[2]/input').click()
     listing.driver.find_element_by_name('price').send_keys(listing.price)
 
     #listing.driver.find_element_by_xpath("//select[@name='moveinMonth']/option[text()='jul']").click()
@@ -194,28 +199,28 @@ def uploadListingImages(listing):
 def postListing(listing):
     clickLocation(listing)
     print("clicked location")
-    time.sleep(3)
+
     clickArea(listing)
     print("clicked area")
-    time.sleep(3)
+
     clickListingType(listing)
     print("clicked listing type")
-    time.sleep(3)
+
     clickListingCategory(listing)
     print("Clicked Category")
-    time.sleep(3)
+
     clickAbideByGuidelines(listing)
     print("Clicked Guidelines")
-    time.sleep(3)
+
     fillOutListing(listing)
     print("Filled out listing")
-    time.sleep(3)
+
     fillOutGeolocation(listing)
     print("Clicked Geolocation")
-    time.sleep(3)
+
     uploadListingImages(listing)
     print("Uploaded images")
-    time.sleep(3)
+
     clickPublishListing(listing)
     print("Clicked publish listing")
 
@@ -224,22 +229,27 @@ def postListing(listing):
 
 # --------------------------- Emails ---------------------
 
-def getFirstCraigslistEmailUrl(listing,emails):
+def getCraigslistEmailUrl(listing,emails):
     for email in emails:
         email.fetch()
         email.read()
-        if listing.title[0:15] in email.subject:
+        if listing.title[0:15] and "email verification" in email.subject:
             emailMessage = email.body
-            email.archive()
             acceptTermsLink = emailMessage.split("https")
             acceptTermsLink = acceptTermsLink[1].split("\r\n")
+            email.delete()
+            print(acceptTermsLink)
             return acceptTermsLink[0]
+ 
 
 def acceptTermsAndConditions(listing,termsUrl):
     listing.driver.get("https" + termsUrl)
+    print(termsUrl)
+    time.sleep(5)
     clickAcceptTerms(listing)
+    time.sleep(10)
 
-def acceptEmailTerms(listing):
+def acceptEmailTerms(listing, linkCounter):
     gmail = Gmail()
     print(gmailUser)
     print(gmailPass)
@@ -250,10 +260,10 @@ def acceptEmailTerms(listing):
     day = today.day
     
     print("Receiving email confirmation...")
-    time.sleep(120)
+    time.sleep(60)
     print ("Checking email")
     emails = gmail.inbox().mail(sender="robot@craigslist.org",unread=True,after=datetime.date(year, month, day-1))
-    termsUrl = getFirstCraigslistEmailUrl(listing,emails)
+    termsUrl = getCraigslistEmailUrl(listing,emails)
     acceptTermsAndConditions(listing,termsUrl)
 
     gmail.logout()
@@ -343,6 +353,7 @@ for dayListedFolder in listedItemsFolders:
 # ------------------------------LIST ITEMS----------------------------------
 listingFolders = [listing for listing in os.listdir(listingsFolderDirectory) if listing[0] != "." and listing != "listed"]
 cycleNum = 1
+linkCounter=-1
 
 for listingFolder in listingFolders:
 
@@ -362,21 +373,23 @@ for listingFolder in listingFolders:
         
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chromedriver-win')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win')
         listing.driver = driver
         print("Images are ready to be uploaded")
         listing.driver.start_client()
+        listing.driver.implicitly_wait(5)
         print("driver is ready")
-        time.sleep(2)
         listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
         print("site reached")
-        time.sleep(2)
         postListing(listing)
-        acceptEmailTerms(listing)
-        print("Listing confirmed")
-        moveToListedFolder(listingFolder,listedFolderDirectory)
+
+        acceptEmailTerms(listing, linkCounter)
+        listing.driver.close()
         listing.driver.quit()
         listing.driver.stop_client()
+        print("Listing confirmed")
+
+        moveToListedFolder(listingFolder,listedFolderDirectory)
         print("Listings posted: ", cycleNum)
         cycleNum = cycleNum + 1
         print ("Waiting 2 minutes")

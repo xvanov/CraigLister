@@ -1,0 +1,54 @@
+<Location>ill<Location>
+<Title>Short Term internship housing in Logan Square<Title>
+<Type>housing offered<Type>
+<Category>rooms & shares<Category>
+<Area>city of chicago<Area>
+<Email>francishouse.c@gmail.com<Email>
+<Street>2748 w. Francis Place<Street>
+<City>chicago<City>
+<CrossStreet><CrossStreet>
+<State>IL<State>
+<GeographicArea>Logan Square<GeographicArea>
+<Postal>60647<Postal>
+<Private_room>private room<Private_room>
+<Private_bath>private bath<Private_bath>
+<Housing_type>house<Housing_type>
+<Laundry>laundry in bldg<Laundry>
+<Parking>street parking<Parking>
+<Price>695<Price>
+
+<Body>
+Are you a student, intern, or young professional living in Chicago for the first time? You could find a sublet in the city all by yourself, but imagine how much better your Chicago experience would be with friends to explore the city with!
+
+Francis House is a fifteen bedroom co-living community in the heart of Logan Square, a neighborhood filled with cheap eats, cozy coffee shops and chill bars. The house is a convenient five minute walk away from the Blue Line train station which takes you downtown in less than twenty minutes or directly to O'Hare Airport.
+
+You'll have your own private bedroom which is fully furnished with a bed, desk and everything you'll need - just bring your suitcase! There are four shared bathrooms and laundry machines you can use for free. The kitchen, living room and basement are all community spaces where roommates study, watch movies and hang out together. The backyard has a seating area, string lights and a fire pit perfect for making delicious s'mores on during the summer.
+
+All shared living spaces are fully furnished and professionally cleaned twice a week by a housekeeper. All utilities are included in your rent. The kitchen is fully stocked with all the basic supplies you'll need to cook. There are many options to buy groceries within walking distance from the house or you can have your groceries delivered.
+
+We've had hundreds of people stay with us from countries all over the world. Trust us, you'll have an unforgettable experience if you live at Francis House. But don't just take our word for it - check out some of these testimonials from previous roommates:
+
+<i>"Living at SubletInn after moving to Chicago was hands-down the best choice I made. The neighborhood location is great and the house is close to the train. SubletInn made it easy to make friends and meet people in a new city, and the community at the house was incredible."</i> - Dante
+
+<i>"I stayed at SubletInn over the summer while doing an internship in Chicago and had by far the best experience I could have imagined. The House was full of life from all of its members, and provided me with a great community after coming in never having been to Chicago."</i> - Eli
+
+<i>"I met extremely interesting people from all over the world and I felt I was a part of a family since day 1. Francis House offered me a perfect mix of fun and privacy to study or work while in the house. Plus, I found its location very convenient, and in a neighborhood with many artsy things going on, local/non-touristic bars and vintage stores. I loved it!"</i> - Angeliki
+
+Moving to a new city by yourself can be lonely and scary, but it doesn't have to be! When you live at Francis House you'll be added to our WhatsApp chat group where you can ask questions and see details about the community events we organize.
+
+If you're a friendly person who's interested in a communal living experience (think hybrid dorm/apartment life!) and you're looking for short or long term housing, go to our website at <u>www.subletinn.com</u> to fill out an application. You can check out our Facebook at <u>www.facebook.com/subletinn</u> to read more reviews or our Instagram at <u>www.instagram.com/chicagosubletinn</u> to see some possible future roommates.
+
+The rooms accommodate one person only, no couples or pets! We have flexible month-to-month lease options available and you can move in or out on any day but you must pay the full months rent. You can read our FAQ on the website and then fill out our contact form if you have any additional questions or if you want to schedule a tour.
+
+
+The Place:
+-All Utilities are included.
+-Each space is communal and cleaned for the house (bathroom, kitchen, living room)
+-There are 3 sets of laundry machine included.
+-No pets allowed.
+
+Interested? Apply here:
+https://www.subletinn.com/communities/francis
+
+<Body>
+
