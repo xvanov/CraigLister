@@ -54,8 +54,8 @@ listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
 
 #------------------Pull in email credentials---------------
-#dotenv_path = join(dirname(__file__), 'settings.env')
-dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
+dotenv_path = join(dirname(__file__), 'settings.env')
+#dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
 load_dotenv(dotenv_path)
 
 print(os.getenv("SenderEmail"))
@@ -373,7 +373,7 @@ for listingFolder in listingFolders:
         
         listing.images = getOrderedListingImages(listingFolder)
         print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-linux')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win')
         listing.driver = driver
         print("Images are ready to be uploaded")
         listing.driver.start_client()
