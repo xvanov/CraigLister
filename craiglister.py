@@ -249,7 +249,7 @@ def acceptTermsAndConditions(listing,termsUrl):
     clickAcceptTerms(listing)
     time.sleep(10)
 
-def acceptEmailTerms(listing, linkCounter):
+def acceptEmailTerms(listing):
     gmail = Gmail()
     print(gmailUser)
     print(gmailPass)
@@ -383,7 +383,7 @@ for listingFolder in listingFolders:
         print("site reached")
         postListing(listing)
 
-        acceptEmailTerms(listing, linkCounter)
+        acceptEmailTerms(listing)
         listing.driver.close()
         listing.driver.quit()
         listing.driver.stop_client()
