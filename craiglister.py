@@ -238,18 +238,17 @@ def getCraigslistEmailUrl(listing,emails):
             acceptTermsLink = emailMessage.split("https")
             acceptTermsLink = acceptTermsLink[1].split("\r\n")
             email.delete()
-            print(acceptTermsLink)
+            print("Confirmation URL: https{0}".format(acceptTermsLink[0]))
             return acceptTermsLink[0]
  
 
 def acceptTermsAndConditions(listing,termsUrl):
     listing.driver.get("https" + termsUrl)
-    print(termsUrl)
-    time.sleep(5)
+    print("URL loaded: https{0}".format(termsUrl))
     clickAcceptTerms(listing)
-    time.sleep(10)
+    #time.sleep(10)
 
-def acceptEmailTerms(listing, linkCounter):
+def acceptEmailTerms(listing):
     gmail = Gmail()
     print(gmailUser)
     print(gmailPass)
@@ -277,6 +276,7 @@ def acceptEmailTerms(listing, linkCounter):
 
 def moveToListedFolder(folder,listedFolderDirectory):
     
+    #/home/ubuntu/CraigLister/listings/listed
     doesItExist = os.listdir(file_dir + '/listings/listed')
     todaysDate = time.strftime("%x").replace("/","-")
     print(doesItExist)
@@ -328,6 +328,10 @@ def getOrderedListingImages(listingFolder):
     for x in secondList:orderedListingImages.append(x)
     return orderedListingImages
 
+
+
+
+
 # Get all the date folders of listed items
 listedItemsFolders = [folder for folder in os.listdir(listedFolderDirectory) if folder[0] != "."]
 
@@ -346,6 +350,15 @@ for dayListedFolder in listedItemsFolders:
         theListedFolderDirectory = os.path.join(dayListedFolderDirectory,listedFolder)
         shutil.move(theListedFolderDirectory,listingsFolderDirectory)
     shutil.rmtree(dayListedFolderDirectory)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -369,31 +382,40 @@ for listingFolder in listingFolders:
         gmailPass = os.getenv("GMAILPASS")
         print(gmailUser)
         print(gmailPass)
-
+        print(userAgent)
         
         listing.images = getOrderedListingImages(listingFolder)
-        print(userAgent)
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-linux')
+        print("images are ready")
+
+
+        #'/home/ubuntu/CraigLister/chrome85-linux'     file_dir + '/chrome85-win'
+        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux') 
         listing.driver = driver
-        print("Images are ready to be uploaded")
+        print("driver is ready")
+
+
         listing.driver.start_client()
         listing.driver.implicitly_wait(5)
-        print("driver is ready")
+        
+
         listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
         print("site reached")
+
         postListing(listing)
+        acceptEmailTerms(listing)
 
-        acceptEmailTerms(listing, linkCounter)
-        listing.driver.close()
-        listing.driver.quit()
-        listing.driver.stop_client()
         print("Listing confirmed")
-
-        moveToListedFolder(listingFolder,listedFolderDirectory)
         print("Listings posted: ", cycleNum)
         cycleNum = cycleNum + 1
-        print ("Waiting 2 minutes")
-        time.sleep(120)
+
+
+        listing.driver.quit()
+        listing.driver.stop_client()
+        
+        
+        moveToListedFolder(listingFolder,listedFolderDirectory)
+        print ("Waiting 30 seconds")
+        time.sleep(30)
         
 
     except: #Sends an email when an error occurs
