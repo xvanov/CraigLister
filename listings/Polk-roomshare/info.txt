@@ -15,7 +15,7 @@
 <Housing_type>house<Housing_type>
 <Laundry>laundry in bldg<Laundry>
 <Parking>street parking<Parking>
-<Price>850<Price>
+<Price>995<Price>
 
 <Body>
 Are you a medical student, intern, or professional living in Chicago for the first time? You could find a sublet in the city all by yourself, but imagine how much better your Chicago experience would be with friends to explore the city with!
@@ -47,8 +47,7 @@ The Place:
 -There is 1 set of laundry machine included.
 -No pets allowed.
 
-Interested? Apply here:
-https://www.subletinn.com/communities/polk
+Interested? Reply to this listing!
 
 <Body>
 

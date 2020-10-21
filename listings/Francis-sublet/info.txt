@@ -3,7 +3,7 @@
 <Type>housing offered<Type>
 <Category>sublets & temporary<Category>
 <Area>city of chicago<Area>
-<Email>francishouse.b@gmail.com<Email>
+<Email>francishouse.first@gmail.com<Email>
 <Street>2748 w. Francis Place<Street>
 <City>chicago<City>
 <CrossStreet><CrossStreet>
@@ -47,8 +47,7 @@ The Place:
 -There are 3 sets of laundry machine included.
 -No pets allowed.
 
-Interested? Apply here:
-https://www.subletinn.com/communities/francis
+Interested? Reply to this listing!
 
 <Body>
 
