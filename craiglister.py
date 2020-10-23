@@ -54,8 +54,8 @@ listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
 
 #------------------Pull in email credentials---------------
-dotenv_path = join(dirname(__file__), 'settings.env')
-#dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
+#dotenv_path = join(dirname(__file__), 'settings.env')
+dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
 load_dotenv(dotenv_path)
 
 print(os.getenv("SenderEmail"))
@@ -161,6 +161,7 @@ def fillOutListing(listing):
     clickDropdown(listing.driver.find_element_by_id("ui-id-4-button"),listing.laundry)
     clickDropdown(listing.driver.find_element_by_id("ui-id-5-button"),listing.parking)
 
+    listing.driver.find_element_by_xpath("/html/body/article/section/form/div/div/fieldset[2]/div/div/div[2]/label/label[2]/input").click()
     listing.driver.find_element_by_name("no_smoking").click()
     listing.driver.find_element_by_name("is_furnished").click()
     listing.driver.find_element_by_xpath("//button[@name='go']").click()
@@ -386,8 +387,8 @@ for listingFolder in listingFolders:
         listing.images = getOrderedListingImages(listingFolder)
         print("images are ready")
 
-        #driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux')
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win') 
+        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux')
+        #driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win') 
         listing.driver = driver
         print("driver is ready")
 
