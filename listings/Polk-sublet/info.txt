@@ -15,14 +15,14 @@
 <Housing_type>house<Housing_type>
 <Laundry>laundry in bldg<Laundry>
 <Parking>street parking<Parking>
-<Price>850<Price>
+<Price>995<Price>
 
 <Body>
 Are you a medical student, intern, or professional living in Chicago for the first time? You could find a sublet in the city all by yourself, but imagine how much better your Chicago experience would be with friends to explore the city with!
 
-The Polk Community is a co-living community that is conveniently right next to the Illinois Medical District, a neighborhood filled with cheap eats, cozy coffee shops and great bars. The house is a convenient 12 minute walk away from the Western  Blue Line train station which takes you directly intro UIC in 5 minutes, downtown in less than 20 minutes, or directly to O'Hare Airport.
+The Polk Community is a co-living community that is conveniently right next to the Illinois Medical District, a neighborhood filled with cheap eats, cozy coffee shops, and great bars. The house is a convenient 12-minute walk away from the Western  Blue Line train station which takes you directly intro UIC in 5 minutes, downtown in less than 20 minutes, or directly to O'Hare Airport.
 
-You'll have your own private bedroom which is fully furnished with a bed, desk and everything you'll need - just bring your suitcase! There is one shared bathrooms and laundry machines you can use for free. The kitchen and living room are all community spaces where roommates study, watch movies and hang out together. The backyard has a seating area, string lights and a fire pit perfect for making delicious s'mores on during the summer.
+You'll have your own private bedroom which is fully furnished with a bed, desk and everything you'll need - just bring your suitcase! There are one shared bathrooms and laundry machines you can use for free. The kitchen and living room are all community spaces where roommates study, watch movies, and hang out together. The backyard has a seating area, string lights, and a fire pit perfect for making delicious s' mores during the summer.
 
 All shared living spaces are fully furnished and professionally cleaned twice a week by a housekeeper. All utilities are included in your rent. The kitchen is fully stocked with all the basic supplies you'll need to cook. There are many options to buy groceries within walking distance from the house or you can have your groceries delivered.
 
@@ -36,19 +36,16 @@ We've had hundreds of people stay with us from countries all over the world. Tru
 
 Moving to a new city by yourself can be lonely and scary, but it doesn't have to be! When you live at our Polk Community you'll be added to our WhatsApp chat group where you can ask questions and see details about the community events we organize.
 
-If you're a friendly person who's interested in a communal living experience (think hybrid dorm/apartment life!) and you're looking for short or long term housing, go to our website at <u>www.subletinn.com</u> to fill out an application. You can check out our Facebook at <u>www.facebook.com/subletinn</u> to read more reviews or our Instagram at <u>www.instagram.com/chicagosubletinn</u> to see some possible future roommates.
-
-The rooms accommodate one person only, no couples or pets! We have flexible month-to-month lease options available and you can move in or out on any day but you must pay the full months rent. You can read our FAQ on the website and then fill out our contact form if you have any additional questions.
+The rooms accommodate one person only, no couples or pets! We have flexible month-to-month lease options available and you can move in or out on any day but you must pay the full month's rent.
 
 
 The Place:
 -All Utilities are included.
 -Each space is communal and cleaned for the house (bathroom, kitchen, living room)
--There is 1 set of laundry machine included.
+-There is 1 set of laundry machines included.
 -No pets allowed.
 
-Interested? Apply here:
-https://www.subletinn.com/communities/polk
+Interested? Go to subletinn(dot)com to learn more!
 
 <Body>
 

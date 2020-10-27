@@ -151,8 +151,7 @@ def fillOutListing(listing):
     listing.driver.find_element_by_name("FromEMail").send_keys(listing.email)
     listing.driver.find_element_by_name("geographic_area").send_keys(listing.geographicarea)
     listing.driver.find_element_by_name("postal").send_keys(listing.postal)
-    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body, random.randint(1,1001))
-    listing.driver.find_element_by_xpath('/html/body/article/section/form/div/div/fieldset[2]/div/div/div[2]/label/label[2]/input').click()
+    listing.driver.find_element_by_name("PostingBody").send_keys(listing.body)
     listing.driver.find_element_by_name('price').send_keys(listing.price)
 
     #listing.driver.find_element_by_xpath("//select[@name='moveinMonth']/option[text()='jul']").click()
@@ -162,6 +161,7 @@ def fillOutListing(listing):
     clickDropdown(listing.driver.find_element_by_id("ui-id-4-button"),listing.laundry)
     clickDropdown(listing.driver.find_element_by_id("ui-id-5-button"),listing.parking)
 
+    listing.driver.find_element_by_xpath("/html/body/article/section/form/div/div/fieldset[2]/div/div/div[2]/label/label[2]/input").click()
     listing.driver.find_element_by_name("no_smoking").click()
     listing.driver.find_element_by_name("is_furnished").click()
     listing.driver.find_element_by_xpath("//button[@name='go']").click()
@@ -387,9 +387,8 @@ for listingFolder in listingFolders:
         listing.images = getOrderedListingImages(listingFolder)
         print("images are ready")
 
-
-        #'/home/ubuntu/CraigLister/chrome85-linux'     file_dir + '/chrome85-win'
-        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux') 
+        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux')
+        #driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win') 
         listing.driver = driver
         print("driver is ready")
 
