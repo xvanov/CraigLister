@@ -54,8 +54,8 @@ listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
 
 #------------------Pull in email credentials---------------
-#dotenv_path = join(dirname(__file__), 'settings.env')
-dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
+dotenv_path = join(dirname(__file__), 'settings.env')
+#dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
 load_dotenv(dotenv_path)
 
 print(os.getenv("SenderEmail"))
@@ -137,7 +137,7 @@ def clickListingCategory(listing):
     #listing.driver.find_element_by_xpath("//section/form/blockquote//label[contains(.,'" + listing.category + "')]/input").click()
 
 def clickAcceptTerms(listing):
-    driver.find_element_by_partial_link_text("chicago.craigslist.org").click()
+    listing.driver.find_element_by_partial_link_text("chicago.craigslist.org").click()
 
 def clickPublishListing(listing):
     listing.driver.find_element_by_xpath('//button[text()="publish"]').click()
@@ -387,8 +387,8 @@ for listingFolder in listingFolders:
         listing.images = getOrderedListingImages(listingFolder)
         print("images are ready")
 
-        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux')
-        #driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win') 
+        #driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux')
+        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win') 
         listing.driver = driver
         print("driver is ready")
 
@@ -403,7 +403,6 @@ for listingFolder in listingFolders:
         postListing(listing)
         acceptEmailTerms(listing)
 
-        print("Listing confirmed")
         print("Listings posted: ", cycleNum)
         cycleNum = cycleNum + 1
 
