@@ -54,12 +54,9 @@ listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
 
 #------------------Pull in email credentials---------------
-dotenv_path = join(dirname(__file__), 'settings.env')
+dotenv_path = join(dirname(__file__), 'settings_craiglister.env')
 #dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
 load_dotenv(dotenv_path)
-
-print(os.getenv("SenderEmail"))
-print(os.getenv("GMAILPASS"))
 
 
 #------------------------------- Set Up Necessary Directories ---------
@@ -250,8 +247,6 @@ def acceptTermsAndConditions(listing,termsUrl):
 
 def acceptEmailTerms(listing):
     gmail = Gmail()
-    print(gmailUser)
-    print(gmailPass)
     gmail.login(gmailUser,gmailPass)
     today = date.today()
     year = today.year
@@ -379,9 +374,12 @@ for listingFolder in listingFolders:
     
         #Pull in the email credentials
         gmailUser = listing.email
-        gmailPass = os.getenv("GMAILPASS")
-        print(gmailUser)
-        print(gmailPass)
+        
+        if gmailUser == "francishouse.first@gmail.com":
+            gmailPass = os.getenv("ffirstPass")
+        elif gmailUser == "francishouse.d@gmail.com":
+            gmailPass = os.getenv("fdPass")
+
         print(userAgent)
         
         listing.images = getOrderedListingImages(listingFolder)
@@ -457,5 +455,5 @@ server = smtplib.SMTP(smtp_server,port)
 server.starttls() # Secure the connection
 server.login(sender_email, password)
 server.sendmail(from_addr=sender_email, to_addrs=receiver_email, msg=message) # send email
-server.quit() 
+server.quit()
 sys.exit()
