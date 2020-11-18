@@ -54,8 +54,8 @@ listedFolderDirectory = os.path.join(listingsFolderDirectory,"listed")
 
 
 #------------------Pull in email credentials---------------
-dotenv_path = join(dirname(__file__), 'settings_craiglister.env')
-#dotenv_path = '/home/ubuntu/CraigListerSettings/settings.env'
+#dotenv_path = join(dirname(__file__), 'settings_craiglister.env')
+dotenv_path = '/home/ubuntu/CraigListerSettings/settings_craiglister.env'
 load_dotenv(dotenv_path)
 
 
@@ -385,8 +385,8 @@ for listingFolder in listingFolders:
         listing.images = getOrderedListingImages(listingFolder)
         print("images are ready")
 
-        #driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux')
-        driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win') 
+        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux')
+        #driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win') 
         listing.driver = driver
         print("driver is ready")
 
