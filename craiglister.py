@@ -385,8 +385,10 @@ for listingFolder in listingFolders:
         listing.images = getOrderedListingImages(listingFolder)
         print("images are ready")
 
-        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome85-linux')
-        #driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome85-win') 
+        
+        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome87-linux')
+        #driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome87-win') 
+        #driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome87-mac')
         listing.driver = driver
         print("driver is ready")
 
