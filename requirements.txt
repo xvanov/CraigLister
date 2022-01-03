@@ -7,7 +7,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 olefile==0.46
-Pillow==8.0.1
+Pillow==9.0.0
 python-dotenv==0.14.0
 requests==2.24.0
 selenium==3.141.0
