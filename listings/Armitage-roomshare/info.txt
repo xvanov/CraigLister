@@ -3,8 +3,8 @@
 <Type>housing offered<Type>
 <Category>rooms & shares<Category>
 <Area>city of chicago<Area>
-<Email>francishouse.first@gmail.com<Email>
-<Street>2464 w. Armitage Ave<Street>
+<Email>xvanov@gmail.com<Email>
+<Street><Street>
 <City>chicago<City>
 <CrossStreet><CrossStreet>
 <State>IL<State>

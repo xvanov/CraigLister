@@ -3,7 +3,7 @@
 <Type>housing offered<Type>
 <Category>sublets & temporary<Category>
 <Area>city of chicago<Area>
-<Email>francishouse.first@gmail.com<Email>
+<Email>xvanov@gmail.com<Email>
 <Street>2464 w. Armitage Ave<Street>
 <City>chicago<City>
 <CrossStreet><CrossStreet>

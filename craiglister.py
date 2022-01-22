@@ -153,8 +153,8 @@ def fillOutListing(listing):
 
     #listing.driver.find_element_by_xpath("//select[@name='moveinMonth']/option[text()='jul']").click()
     clickDropdown(listing.driver.find_element_by_id("ui-id-1-button"),listing.private_room)
-    clickDropdown(listing.driver.find_element_by_id("ui-id-2-button"),listing.private_bath)
-    clickDropdown(listing.driver.find_element_by_id("ui-id-3-button"),listing.housing_type)
+    clickDropdown(listing.driver.find_element_by_id("ui-id-3-button"),listing.private_bath)
+    clickDropdown(listing.driver.find_element_by_id("ui-id-2-button"),listing.housing_type)
     clickDropdown(listing.driver.find_element_by_id("ui-id-4-button"),listing.laundry)
     clickDropdown(listing.driver.find_element_by_id("ui-id-5-button"),listing.parking)
 
@@ -163,15 +163,24 @@ def fillOutListing(listing):
     listing.driver.find_element_by_name("is_furnished").click()
     listing.driver.find_element_by_xpath("//button[@name='go']").click()
 
+def elementIdVisible(element):
+    print("Element {} is visible? ".format(element) + str(listing.driver.find_element_by_id(element).is_displayed()))
+
+def elementNameVisible(element):
+    print("Element {} is visible? ".format(element) + str(listing.driver.find_element_by_name(element).is_displayed()))
+
 def fillOutGeolocation(listing):
-    time.sleep(3)
+    time.sleep(1)
+    elementNameVisible('xstreet0')
+    #options.add_argument("window-size=1200x600")
     listing.driver.find_element_by_name("xstreet0").send_keys(listing.street)
     listing.driver.find_element_by_name("xstreet1").send_keys(listing.xstreet)
     #listing.driver.find_element_by_name("city").send_keys(listing.city)
     #listing.driver.find_element_by_name("region").send_keys(listing.state)
     time.sleep(1)
+    #elementIdVisible('search_button')
     listing.driver.find_element_by_id("search_button").click()
-    time.sleep(2)
+    time.sleep(1)
     listing.driver.find_element_by_xpath("//*[@id='leafletForm']/button[1]").click()
 
 def removeImgExifData(path):
@@ -190,7 +199,7 @@ def uploadListingImages(listing):
     for image in listing.images:
         removeImgExifData(image)
         uploadImagePath(listing,image)
-        time.sleep(5)
+        time.sleep(1)
     clickDoneOnImageUploading(listing)
 
 def postListing(listing):
@@ -206,8 +215,8 @@ def postListing(listing):
     clickListingCategory(listing)
     print("Clicked Category")
 
-    clickAbideByGuidelines(listing)
-    print("Clicked Guidelines")
+    #clickAbideByGuidelines(listing)
+    #print("Clicked Guidelines")
 
     fillOutListing(listing)
     print("Filled out listing")
@@ -247,14 +256,16 @@ def acceptTermsAndConditions(listing,termsUrl):
 
 def acceptEmailTerms(listing):
     gmail = Gmail()
-    gmail.login(gmailUser,gmailPass)
+    print(gmailUser,os.getenv("GMAILPASS"))
+    gmail.login(gmailUser,os.getenv("GMAILPASS"))
     today = date.today()
     year = today.year
     month = today.month
     day = today.day
     
     print("Receiving email confirmation...")
-    time.sleep(60)
+    print('sleep for 15 s')
+    time.sleep(15)
     print ("Checking email")
     emails = gmail.inbox().mail(sender="robot@craigslist.org",unread=True,after=datetime.date(year, month, day-1))
     termsUrl = getCraigslistEmailUrl(listing,emails)
@@ -365,28 +376,20 @@ linkCounter=-1
 
 for listingFolder in listingFolders:
 
-    try:
+    if True:
 
         listingFolder = os.path.abspath(os.path.join(listingsFolderDirectory, listingFolder))
         with open(os.path.abspath(os.path.join(listingFolder, 'info.txt')), 'r') as info:
             listing = listingInfoParse(info.read())
 
-    
         #Pull in the email credentials
         gmailUser = listing.email
-        
-        if gmailUser == "francishouse.first@gmail.com":
-            gmailPass = os.getenv("ffirstPass")
-        elif gmailUser == "francishouse.d@gmail.com":
-            gmailPass = os.getenv("fdPass")
-
         print(userAgent)
-        
         listing.images = getOrderedListingImages(listingFolder)
         print("images are ready")
 
-        
-        driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome87-linux')
+        driver = webdriver.Chrome(options=options, executable_path='/usr/lib/chromium-browser/chromedriver')
+        #'/home/alex/cur/rep/CraigLister/chrome87-linux'
         #driver = webdriver.Chrome(options=options, executable_path=file_dir + '/chrome87-win') 
         #driver = webdriver.Chrome(options=options, executable_path='/home/ubuntu/CraigLister/chrome87-mac')
         listing.driver = driver
@@ -395,7 +398,6 @@ for listingFolder in listingFolders:
 
         listing.driver.start_client()
         listing.driver.implicitly_wait(5)
-        
 
         listing.driver.get("https://post.craigslist.org/c/" + listing.loc + "?lang=en")
         print("site reached")
@@ -406,17 +408,14 @@ for listingFolder in listingFolders:
         print("Listings posted: ", cycleNum)
         cycleNum = cycleNum + 1
 
-
         listing.driver.quit()
         listing.driver.stop_client()
-        
-        
+
         moveToListedFolder(listingFolder,listedFolderDirectory)
         print ("Waiting 30 seconds")
         time.sleep(30)
-        
 
-    except: #Sends an email when an error occurs
+    else: #Sends an email when an error occurs
 
         errorString = traceback.format_exc() #Gets the traceback log after an error happens
 
@@ -430,6 +429,7 @@ for listingFolder in listingFolders:
         # Try to log in to server and send email
         server = smtplib.SMTP(smtp_server,port)
         server.starttls() # Secure the connection
+        print(sender_email, password)
         server.login(sender_email, password)
         server.sendmail(from_addr=sender_email, to_addrs=receiver_email, msg=message) # send email
         server.quit() 
